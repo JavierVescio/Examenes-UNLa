@@ -1,5 +1,5 @@
 <?php
-include_once 'RepositorioAlumnos.inc.php';
+include_once 'Repository/RepositorioAlumnos.inc.php';
 
 class ValidadorLogin {
     private $alumno;

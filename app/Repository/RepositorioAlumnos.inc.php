@@ -1,7 +1,7 @@
 <?php
 
 class RepositorioAlumnos{
-    
+
     public static function email_existe($conexion, $email) {
         //Vamos a buscar en la bd cualquier email que tenga ese nombre.
         $email_existe = false;

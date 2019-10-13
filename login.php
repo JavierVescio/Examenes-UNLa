@@ -70,8 +70,8 @@ if (isset($_POST['login'])){
 
 
 
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="www/js/jquery.min.js"></script>
+<script src="www/js/bootstrap.min.js"></script>
 <?php
 include_once './plantillas/documento-cierre.inc.php';
 ?>
