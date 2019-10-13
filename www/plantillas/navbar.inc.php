@@ -1,6 +1,7 @@
 <?php
+
 include_once APP_PATH . '/Conexion.inc.php';
-include_once APP_PATH . '/RepositorioAlumnos.inc.php';
+include_once APP_PATH . '/Repository/RepositorioAlumnos.inc.php';
 include_once APP_PATH . '/ControlSesion.inc.php';
 include_once APP_PATH . '/config.inc.php';
 

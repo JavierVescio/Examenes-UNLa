@@ -1,4 +1,7 @@
 <?php
+require_once WWW_PATH . '/constantes.php';
+require_once APP_PATH . '/Entity/Alumno.inc.php';
+
 
 class RepositorioAlumnos{
 
@@ -85,7 +88,7 @@ class RepositorioAlumnos{
         
         if (isset($conexion)) {
             try {
-                include_once 'Alumno.inc.php';
+                //include_once 'Alumno.inc.php';
                 
                 $sql = "SELECT * FROM alumnos WHERE email = :email";
                 $sentencia = $conexion->prepare($sql);

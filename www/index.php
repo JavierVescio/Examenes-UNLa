@@ -9,7 +9,7 @@
 
     $titulo = 'Menu principal';
 
-    include_once WWW_PATH . './plantillas/documento-declaracion.inc.php';
+    include_once WWW_PATH . '/plantillas/documento-declaracion.inc.php';
     include_once WWW_PATH . '/plantillas/navbar.inc.php';
     
     if (!ControlSesion::sesion_iniciada_alumno()) {
@@ -17,10 +17,10 @@
     }
 ?>
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
 
 <?php
-    include_once APP_PATH . '/plantillas/documento-cierre.inc.php';
+    include_once WWW_PATH . '/plantillas/documento-cierre.inc.php';
 ?>
 
