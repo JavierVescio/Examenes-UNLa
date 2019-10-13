@@ -24,10 +24,13 @@
 <div class="container">
     <div class="well">
         <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="http://127.0.0.1:5000/">
+            <input type="hidden" id="id_staff" name="id_staff" value="" />
             <fieldset>
+                <!--
                 <div class="col-xs-12">
                     <button class="btn btn-default pull-right" id="defaultData">Fill default data</button>
                 </div>
+                -->
                 <div class="form-group col-xs-12 col-sm-6">
                     <label for="firstname" class="control-label">First Name</label>
                     <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter First Name">
@@ -36,17 +39,22 @@
                     <label for="lastname" class="control-lable">Last Name</label>
                     <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter Last Name">
                 </div>
-                <div class="form-group col-xs-12 col-sm-12">
-                    <label for="address" class="control-label">Address</label>
-                    <input type="text" class="form-control" name="address[street]" id="address_street" placeholder="Your street">
-                </div>
-                <div class="form-group col-xs-6 col-sm-6">
-                    <input type="text" class="form-control" name="address[city]" id="address_city" placeholder="Your city">
-                </div>
-                <div class="form-group col-xs-6 col-sm-6">
-                    <input type="text" class="form-control" name="address[zip]" id="address_zip" placeholder="Your zip code">
-                </div>
 
+                <div class="form-group col-xs-6 col-sm-6">
+                    <input type="text" class="form-control" name="tipo_doc" id="tipo_doc" placeholder="Tipo doc">
+                </div>
+                <div class="form-group col-xs-6 col-sm-6">
+                    <input type="text" class="form-control" name="documento" id="documento" placeholder="Documento">
+                </div>
+                <div class="form-group col-xs-12 col-sm-12">
+                    <label for="email" class="control-label">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                </div>
+                <div class="form-group col-xs-12 col-sm-12">
+                    <label for="clave" class="control-label">Clave</label>
+                    <input type="text" class="form-control" name="password" id="password" placeholder="Clave">
+                </div>
+                <!--
                 <div class="col-xs-12">
                     <label class="control-label" for="emails">Email:</label>
                     <div class="control-group" id="emails">
@@ -76,13 +84,18 @@
                         </select>
                     </p>
                 </div>
+                -->
+
                 <div class="pull-right">
                     <br>
                     <div class="btn-group col-xs-12">
+                        <button type="button" class="btn btn-default" id="saveButton">Grabar</button>
+                        <!--
                         <button type="button" class="btn btn-default" id="sendQueryString">Query string</button>
                         <button type="button" class="btn btn-primary" id="sendSerialized">Serialized form</button>
                         <button type="button" class="btn btn-warning" id="sendPlainJSon">Plain json</button>
                         <button type="button" class="btn btn-success" id="sendTreeJSon">Tree json</button>
+                        -->
                     </div>
                 </div>
             </fieldset>

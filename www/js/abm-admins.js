@@ -1,7 +1,8 @@
 
 
 $(document).ready(function() {
-    alert("TEST");
+    //alert("TEST");
+
     var table = $('#datatable').DataTable({
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
@@ -65,15 +66,24 @@ $(document).ready(function() {
             url: 'http://royal-academy.local:81/php/abm-admins.php',//# TODO armar url
             type: 'POST',
             data: datos,
+            dataSrc: 'data',
             headers: {
                 //'x-auth-token': localStorage.accessToken,
                 //"Authorization": "Token "+localStorage.auth_token,
                 //"Content-Type": "application/json"
             },
-            //dataType: 'json',
+            dataType: 'json',
             success: function(data) {
-                alert(JSON.stringify(data));
-                $('#datatable').DataTable().ajax.reload();
+                var staff = data.data[0];
+                $('#id_staff').val(staff.id_staff);
+                $('#firstname').val(staff.nombre);
+                $('#lastname').val(staff.apellido);
+                $('#tipo_doc').val(staff.tipo_doc);
+                $('#documento').val(staff.documento);
+                $('#email').val(staff.email);
+                $('#password').val(staff.clave);
+
+                //$('#datatable').DataTable().ajax.reload();
             }
         })
         //document.location.href = "reserva_open.html";
@@ -105,6 +115,38 @@ $(document).ready(function() {
     } )
 
 
+    function ajaxCallRequest(f_method, f_url, f_data) {
+        var f_contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+        $.ajax({
+            url: f_url,
+            type: f_method,
+            contentType: f_contentType,
+            dataType: 'json',
+            data: f_data,
+            success: function(data) {
+                var jsonResult = JSON.stringify(data);
+                $("#loginResults").val(unescape(jsonResult));
+
+            },
+            error: function(data) {
+                var jsonResult = JSON.stringify(data);
+                localStorage.removeItem('auth_token');
+                $("#loginResults").val("ERROR "+ data.responseJSON.message);
+            }
+
+        });
+    }
+
+    $("#saveButton").click(function(event) {
+        event.preventDefault();
+        var form = $('#ajaxForm');
+        var method = form.attr('method');
+        var url = form.attr('action') ;
+        var jsonData = $(form).serializeObject();
+        console.log(jsonData);
+        ajaxCallRequest(method, url, jsonData);
+        $('#datatable').DataTable().ajax.reload();
+    });
 
 });
 
