@@ -1,10 +1,11 @@
 <?php
-include_once 'app/config.inc.php';
-include_once 'app/Conexion.inc.php';
-include_once 'app/RepositorioAlumnos.inc.php';
-include_once 'app/ValidadorLogin.inc.php';
-include_once 'app/ControlSesion.inc.php';
-include_once 'app/Redireccion.inc.php';
+require_once 'constantes.php'
+include_once APP_PATH . '/config.inc.php';
+include_once APP_PATH . '/Conexion.inc.php';
+include_once APP_PATH . '/RepositorioAlumnos.inc.php';
+include_once APP_PATH . '/ValidadorLogin.inc.php';
+include_once APP_PATH . '/ControlSesion.inc.php';
+include_once APP_PATH . '/Redireccion.inc.php';
 
 if (ControlSesion::sesion_iniciada_alumno()) {
 
@@ -18,8 +19,8 @@ if (ControlSesion::sesion_iniciada_alumno()) {
 
 $titulo = 'Logout';
 
-include_once './plantillas/documento-declaracion.inc.php';
-include_once './plantillas/navbar.inc.php';
+include_once WWW_PATH . '/plantillas/documento-declaracion.inc.php';
+include_once WWW_PATH . '/plantillas/navbar.inc.php';
 ?>
 
 <div class="container">
@@ -46,5 +47,5 @@ include_once './plantillas/navbar.inc.php';
 </div>
 
 <?php
-include_once './plantillas/documento-cierre.inc.php';
+include_once WWW_PATH . '/plantillas/documento-cierre.inc.php';
 ?>

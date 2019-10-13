@@ -1,13 +1,15 @@
 <?php
-include_once './app/Conexion.inc.php';
-include_once 'app/ValidadorLogin.inc.php';
-include_once './app/Redireccion.inc.php';
-include_once './app/ControlSesion.inc.php';
+require_once 'constantes.php';
+
+include_once APP_PATH . '/Conexion.inc.php';
+include_once APP_PATH . '/ValidadorLogin.inc.php';
+include_once APP_PATH . '/Redireccion.inc.php';
+include_once APP_PATH . '/ControlSesion.inc.php';
 
 $titulo = 'Login';
 
-include_once './plantillas/documento-declaracion.inc.php';
-include_once './plantillas/navbar.inc.php';
+include_once WWW_PATH . '/plantillas/documento-declaracion.inc.php';
+include_once WWW_PATH . '/plantillas/navbar.inc.php';
 
 if (ControlSesion::sesion_iniciada_alumno()){
     Redireccion::redirigir(SERVIDOR); //Si ya inicio sesion el usuario, lo echamos de la pantalla de login
@@ -70,9 +72,9 @@ if (isset($_POST['login'])){
 
 
 
-<script src="www/js/jquery.min.js"></script>
-<script src="www/js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <?php
-include_once './plantillas/documento-cierre.inc.php';
+include_once WWW_PATH . '/plantillas/documento-cierre.inc.php';
 ?>
 

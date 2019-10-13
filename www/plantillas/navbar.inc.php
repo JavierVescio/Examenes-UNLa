@@ -1,8 +1,8 @@
 <?php
-include_once './app/Conexion.inc.php';
-include_once './app/RepositorioAlumnos.inc.php';
-include_once './app/ControlSesion.inc.php';
-include_once './app/config.inc.php';
+include_once APP_PATH . '/Conexion.inc.php';
+include_once APP_PATH . '/RepositorioAlumnos.inc.php';
+include_once APP_PATH . '/ControlSesion.inc.php';
+include_once APP_PATH . '/config.inc.php';
 
 Conexion :: abrir_conexion();
 ?>
