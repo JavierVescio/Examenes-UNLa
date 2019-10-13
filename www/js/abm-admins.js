@@ -74,6 +74,7 @@ $(document).ready(function() {
             },
             dataType: 'json',
             success: function(data) {
+                alert(JSON.stringify(data.data[0]))
                 var staff = data.data[0];
                 $('#id_staff').val(staff.id_staff);
                 $('#firstname').val(staff.nombre);
@@ -81,7 +82,7 @@ $(document).ready(function() {
                 $('#tipo_doc').val(staff.tipo_doc);
                 $('#documento').val(staff.documento);
                 $('#email').val(staff.email);
-                $('#password').val(staff.clave);
+                $('#password').val(staff.clave_acceso);
 
                 //$('#datatable').DataTable().ajax.reload();
             }
@@ -92,20 +93,20 @@ $(document).ready(function() {
     $('#datatable tbody').on( 'click', 'button.btn-cancel', function () {
         var data = table.row( $(this).parents('tr') ).data();
         alert("Eliminando administrador ");
+        var datos = { 'action' : "delete",
+            'id_staff' : data.id_staff
+        };
 
-        var datos = new Object();
-        datos.accion = "delete";
-        datos.id_staff = data.codigo ;
         $.ajax({
-            url: 'http://127.0.0.1:5000/ ---- ',//# TODO armar url
-            type: 'PUT',
-            data: JSON.stringify(datos),
+            url: 'http://royal-academy.local:81/php/abm-admins.php',//# TODO armar url
+            type: 'POST',
+            data: datos,
             headers: {
                 //'x-auth-token': localStorage.accessToken,
                 //"Authorization": "Token "+localStorage.auth_token,
-                "Content-Type": "application/json"
+                //"Content-Type": "application/json"
             },
-            dataType: 'json',
+            //dataType: 'json',
             success: function(data) {
                 alert(JSON.stringify(data));
                 $('#datatable').DataTable().ajax.reload();
