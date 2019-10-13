@@ -3,13 +3,14 @@
 $(document).ready(function() {
     //alert("TEST");
 
+    // Armo la DATATABLE de los administradores : peticion ajax, mapeando JSON recibido y columnas
     var table = $('#datatable').DataTable({
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url":"http://royal-academy.local:81/php/abm-admins.php", //# TODO armar url
+            "url":"/php/abm-admins.php", //# TODO armar url
             /*"beforeSend": function (request) {
                 request.setRequestHeader("Authorization", "Token "+token);
             },*/
@@ -39,7 +40,7 @@ $(document).ready(function() {
                 "data": null,
                 //"defaultContent": "<button id='cancel' class='btn btn-primary btn-lg btn-block btn-cancel'>Cancelar!</button>"
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>Cancelar!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>Eliminar!</button>" ;
                 }
             },
             {
@@ -57,13 +58,14 @@ $(document).ready(function() {
     $('#datatable tbody').on( 'click', 'button.btn-view', function () {
         var data = table.row( $(this).parents('tr') ).data();
 
-        alert('DEberia cargar el form con los datos');
-        var datos = { 'action' : "show",
-                'id_staff' : data.id_staff
+        //alert('DEberia cargar el form con los datos');
+        var datos = {
+            'action' : "show",
+            'id_staff' : data.id_staff
         };
 
         $.ajax({
-            url: 'http://royal-academy.local:81/php/abm-admins.php',//# TODO armar url
+            url: '/php/abm-admins.php',//# TODO armar url
             type: 'POST',
             data: datos,
             dataSrc: 'data',
@@ -74,31 +76,42 @@ $(document).ready(function() {
             },
             dataType: 'json',
             success: function(data) {
-                alert(JSON.stringify(data.data[0]))
+
                 var staff = data.data[0];
+
+                // Muestro en el recuadro los resultados para debug
+                var jsonResult = JSON.stringify(staff);
+                $("#results").val(unescape(jsonResult));
+
+                // Seteo los campos del formulario
                 $('#id_staff').val(staff.id_staff);
-                $('#firstname').val(staff.nombre);
-                $('#lastname').val(staff.apellido);
+                $('#nombre').val(staff.nombre);
+                $('#apellido').val(staff.apellido);
                 $('#tipo_doc').val(staff.tipo_doc);
                 $('#documento').val(staff.documento);
                 $('#email').val(staff.email);
-                $('#password').val(staff.clave_acceso);
+                $('#clave_acceso').val(staff.clave_acceso);
 
+                $('#staffFormContainer').toggle();
+                $('#staffFormContainer').show();
+                //$('#formContainer').modal('toggle');
+                //$('#formContainer').modal('show');
                 //$('#datatable').DataTable().ajax.reload();
             }
         })
         //document.location.href = "reserva_open.html";
     } )
 
+    // Evento eliminar asociado a cada ROW de la tabla
     $('#datatable tbody').on( 'click', 'button.btn-cancel', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        alert("Eliminando administrador ");
+
         var datos = { 'action' : "delete",
             'id_staff' : data.id_staff
         };
 
         $.ajax({
-            url: 'http://royal-academy.local:81/php/abm-admins.php',//# TODO armar url
+            url: '/php/abm-admins.php',//# TODO armar url
             type: 'POST',
             data: datos,
             headers: {
@@ -108,8 +121,16 @@ $(document).ready(function() {
             },
             //dataType: 'json',
             success: function(data) {
-                alert(JSON.stringify(data));
+                alert(" Eliminado administrador ");
+                var jsonResult = JSON.stringify(data);
+                $("#results").val(unescape(jsonResult));
                 $('#datatable').DataTable().ajax.reload();
+            },
+            error: function(data) {
+                alert(" ERROR Eliminando administrador ");
+                var jsonResult = JSON.stringify(data);
+                $("#results").val( "ERROR " + unescape(jsonResult));
+
             }
         })
 
@@ -126,18 +147,19 @@ $(document).ready(function() {
             data: f_data,
             success: function(data) {
                 var jsonResult = JSON.stringify(data);
-                $("#loginResults").val(unescape(jsonResult));
+                $("#results").val(unescape(jsonResult));
 
             },
             error: function(data) {
                 var jsonResult = JSON.stringify(data);
                 localStorage.removeItem('auth_token');
-                $("#loginResults").val("ERROR "+ data.responseJSON.message);
+                $("#results").val("ERROR "+ data.responseJSON.message);
             }
 
         });
     }
 
+    // Evento del boton de GRABAR del formulario
     $("#saveButton").click(function(event) {
         event.preventDefault();
         var form = $('#ajaxForm');

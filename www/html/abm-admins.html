@@ -20,30 +20,68 @@
 </head>
 
 <body>
-<h1>How to send bootstrap form using ajax request</h1>
-<div class="container">
-    <div class="well">
-        <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="http://127.0.0.1:5000/">
-            <input type="hidden" id="id_staff" name="id_staff" value="" />
+<h1>ABM de Administradores</h1>
+
+<!-- DATATABLE - LISTA ADMINS (Staff)-->
+<div id="administradores" class="container">
+    <table id="datatable" class="table table-striped table-bordered display">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>TipoDoc</th>
+            <th>Documento</th>
+            <th>Tipo Perfil</th>
+            <th>Email</th>
+            <th>Anular</th>
+            <th>Ver</th>
+        </tr>
+        </thead>
+
+        <tbody id="wbodychange">
+        </tbody>
+    </table>
+</div>
+<!-- PRUEBA MODAL -->
+<!--
+<div id="formContainer" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Modal header</h3>
+    </div>
+    <div class="modal-body">YESS!!!
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+-->
+
+<!-- FORMULARIO DE ADMINISTRADOR -->
+<div class="container" id="staffFormContainer" style="display: none">
+ <div class="well">
+        <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-admins.php">
+
             <fieldset>
-                <!--
-                <div class="col-xs-12">
-                    <button class="btn btn-default pull-right" id="defaultData">Fill default data</button>
-                </div>
-                -->
+                <input type="text" style="display:none;"  class="form-control" id="id_staff" name="id_staff" value="" />
+                <input type="hidden"  class="form-control" id="action" name="action" value="create" />
                 <div class="form-group col-xs-12 col-sm-6">
-                    <label for="firstname" class="control-label">First Name</label>
-                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter First Name">
+                    <label for="nombre" class="control-label">Nombre</label>
+                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Enter First Name">
                 </div>
                 <div class="form-group col-xs-12 col-sm-6">
-                    <label for="lastname" class="control-lable">Last Name</label>
-                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter Last Name">
+                    <label for="apellido" class="control-lable">Apellido</label>
+                    <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Enter Last Name">
                 </div>
 
                 <div class="form-group col-xs-6 col-sm-6">
+                    <label for="tipo_doc" class="control-lable">Tipo Doc</label>
                     <input type="text" class="form-control" name="tipo_doc" id="tipo_doc" placeholder="Tipo doc">
                 </div>
                 <div class="form-group col-xs-6 col-sm-6">
+                    <label for="tipo_doc" class="control-lable">Documento</label>
                     <input type="text" class="form-control" name="documento" id="documento" placeholder="Documento">
                 </div>
                 <div class="form-group col-xs-12 col-sm-12">
@@ -51,8 +89,8 @@
                     <input type="email" class="form-control" name="email" id="email" placeholder="Email">
                 </div>
                 <div class="form-group col-xs-12 col-sm-12">
-                    <label for="password" class="control-label">Clave</label>
-                    <input type="text" class="form-control" name="password" id="password" placeholder="Clave">
+                    <label for="clave_acceso" class="control-label">Clave</label>
+                    <input type="text" class="form-control" name="clave_acceso" id="clave_acceso" placeholder="Clave">
                 </div>
                 <!--
                 <div class="col-xs-12">
@@ -90,18 +128,17 @@
                     <br>
                     <div class="btn-group col-xs-12">
                         <button type="button" class="btn btn-default" id="saveButton">Grabar</button>
-                        <!--
-                        <button type="button" class="btn btn-default" id="sendQueryString">Query string</button>
-                        <button type="button" class="btn btn-primary" id="sendSerialized">Serialized form</button>
-                        <button type="button" class="btn btn-warning" id="sendPlainJSon">Plain json</button>
-                        <button type="button" class="btn btn-success" id="sendTreeJSon">Tree json</button>
-                        -->
+                        <button class="btn btn-danger" type="reset">Limpiar</button>
                     </div>
                 </div>
             </fieldset>
         </form>
-    </div>
+
+ </div>
 </div>
+
+
+<!-- Campos de DEBUG - Para visualizar datos enviados y resultados recibidos -->
 <div class="container">
     <div class="well col-xs-12">
         <div class="control-label col-xs-12">
@@ -119,33 +156,6 @@
         </div>
     </div>
 </div>
-
-
-<!-- LISTA ADMINS (Staff)-->
-
-
-<div id="administradores" class="container">
-    <table id="datatable" class="table table-striped table-bordered display">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>TipoDoc</th>
-            <th>Documento</th>
-            <th>Tipo Perfil</th>
-            <th>Email</th>
-            <th>Anular</th>
-            <th>Ver</th>
-        </tr>
-        </thead>
-
-        <tbody id="wbodychange">
-        </tbody>
-    </table>
-</div>
-
-
 
 
 <!-- LOGIN FORM --------------------------------------------------------------------- -->
