@@ -1,27 +1,25 @@
 <?php
 
 
-class RepositorioSede
+class RepositorioCurso
 {
-
     /**
-     * @return Sede[]
+     * @return Curso[]
      */
-    public static function findById($conexion, $id_sede = null)  {
+    public static function findById($conexion, $id = null)  {
         $list = array();
         if (isset($conexion)) {
             try {
-                $sql = "SELECT `sedes`.`id_sede`,
-                            `sedes`.`nombre`,
-                            `sedes`.`direccion`,
-                            `sedes`.`id_pais`
-                        FROM `royal_academy`.`sedes`;
+                $sql = "SELECT `cursos`.`id_curso`,
+                            `cursos`.`nombre`,
+                            `cursos`.`descripcion`
+                        FROM `royal_academy`.`cursos`
                        ";
 
-                if(!is_null($id_sede)) {
-                    $sql = $sql . " WHERE `id_sede` = :id_sede;";
+                if(!is_null($id)) {
+                    $sql = $sql . " WHERE `id_curso` = :id;";
                     $stmt = $conexion->prepare($sql);
-                    $stmt->bindParam(':id_sede', $id_sede, PDO::PARAM_INT);
+                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
                 }else {
                     $stmt = $conexion->prepare($sql);
@@ -31,9 +29,8 @@ class RepositorioSede
                 $result = $stmt->fetchAll();
 
                 if (!empty($result)) {
-                    //while ($data = $result->fetch_assoc()) {
                     foreach ($result as $data){
-                        $result = Sede::buildFromArray($data);
+                        $result = Curso::buildFromArray($data);
                         $list[] = $data;
                     }
                 }
@@ -50,5 +47,4 @@ class RepositorioSede
     public static function listAll($conexion){
         return self::findById($conexion);
     }
-
 }

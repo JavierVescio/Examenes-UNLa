@@ -26,6 +26,22 @@ class Alumno {
         $this->id_staff_inscripcion = $id_staff_inscripcion;
         $this->fecha_alta = $fecha_alta;
     }
+
+    public static function buildFromArray(array $arr){
+        //var_dump($arr);
+        return new Alumno(
+            $arr['id_alumno'],
+            $arr['apellido'],
+            $arr['nombre'],
+            $arr['tipo_doc'],
+            $arr['documento'],
+            $arr['email'],
+            $arr['celular'],
+            $arr['clave_acceso'],
+            $arr['id_sede_inscripcion'],
+            $arr['id_staff_inscripcion'],
+            $arr['fecha_alta']);
+    }
        
     public function getId_alumno() {
         return $this->id_alumno;
