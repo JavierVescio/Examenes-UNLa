@@ -1,17 +1,12 @@
 <?php
-
+include_once ($_SERVER['DOCUMENT_ROOT'] . '/../app/Controller/GenericController.inc.php');
 include_once ( $_SERVER['DOCUMENT_ROOT'] . '/../app/Repository/RepositorioStaff.inc.php');
 include_once ($_SERVER['DOCUMENT_ROOT'] . '/../app/Entity/Staff.inc.php');
-include_once ($_SERVER['DOCUMENT_ROOT'] . '/../app/Conexion.inc.php');
 
-class ControllerStaff
+class ControllerStaff extends GenericController
 {
-    private $action = null;
-    private $params;
 
-    private $map;
-
-    private function mapActions(){
+    protected function mapActions(){
             $this->map['create'] = 'create';
             $this->map['update'] = 'create';
             $this->map['delete'] = 'delete' ;
@@ -20,31 +15,8 @@ class ControllerStaff
 
     }
 
-    public function __construct()
-    {
 
-    }
-
-    public function post($arr){
-
-        if(!array_key_exists('action', $arr))
-            throw  new Exception(self::class . '- Action no definida en el mapa de acciones ');
-
-        $this->action = $arr['action'];
-        $this->params = $arr;
-        $this->mapActions();
-    }
-
-    public function run(){
-            if(is_null($this->action))
-                throw  new Exception(self::class . '- Action no definida ');
-
-            $action = $this->map[$this->action];
-            return $this->{$action}();
-
-    }
-
-    private function create(){
+    public function create(){
         $staff = Staff::buildFromArray($this->params);
         $status = RepositorioStaff::insertOrUpdate(Conexion::getConexion(),$staff);
 
@@ -58,7 +30,7 @@ class ControllerStaff
         return json_encode($response);
     }
 
-    private function delete(){
+    public function delete(){
         if(!array_key_exists('id_staff', $this->params))
             throw  new Exception(self::class . ' delete - id_staff no definido ');
 
@@ -75,7 +47,7 @@ class ControllerStaff
         return json_encode($response);
     }
 
-    private function listAll(){
+    public function listAll(){
         $listaStaff = RepositorioStaff::listAll(Conexion::getConexion());
         if(!is_null($listaStaff)){
             $response['status'] = 'success';
@@ -94,7 +66,7 @@ class ControllerStaff
 
     }
 
-    private function show(){
+    public function show(){
 
         if(!array_key_exists('id_staff', $this->params))
             throw  new Exception(self::class . ' delete - id_staff no definido ');

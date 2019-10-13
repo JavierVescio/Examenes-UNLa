@@ -92,37 +92,22 @@
                     <label for="clave_acceso" class="control-label">Clave</label>
                     <input type="text" class="form-control" name="clave_acceso" id="clave_acceso" placeholder="Clave">
                 </div>
-                <!--
-                <div class="col-xs-12">
-                    <label class="control-label" for="emails">Email:</label>
-                    <div class="control-group" id="emails">
-                        <div class="controls">
-                            <div class="entry input-group form-group">
-                                <span class="input-group-addon">@</span>
-                                <input class="form-control" name="emails[0]" placeholder="add email" type="text">
-                                <span class="input-group-btn">
-                    <button class="btn btn-success btn-add" type="button">
-                      <span class="glyphicon glyphicon-plus"></span>
-                  </button>
-                  </span>
-                            </div>
-                        </div>
-                    </div>
-                    <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another email :)</small>
+                <div class="form-group col-xs-12 col-sm-12">
+                    <label for="tipo_perfil" class="control-label">Tipo Perfil</label>
+                    <select class="form-control" name="tipo_perfil" id="tipo_perfil" >
+                        <option value="" >Seleccione un Tipo de Perfil</option>
+                        <option value="AS">Adm Sede</option>
+                        <option value="AP">Adm Pais</option>
+                        <option value="AG">Adm General</option>
+                    </select>
+                    <label for="id_sede" class="control-label">Sedes</label>
+                    <select class="form-control" name="id_sede" id="id_sede" class="browser-default custom-select">
+                    </select>
 
-                    <p>
-                        <label for="origen" class="control-label">Origen</label>
-                        <select class="form-control" name="origen" id="origen" class="browser-default custom-select">
-
-                        </select>
-
-                        <label for="destino" class="control-label">Destino</label>
-                        <select class="form-control" name="destino" id="destino" class="browser-default custom-select">
-
-                        </select>
-                    </p>
+                    <label for="id_pais" class="control-label">Paises</label>
+                    <select class="form-control" name="id_pais" id="id_pais" class="browser-default custom-select">
+                    </select>
                 </div>
-                -->
 
                 <div class="pull-right">
                     <br>

@@ -91,6 +91,8 @@ $(document).ready(function() {
                 $('#documento').val(staff.documento);
                 $('#email').val(staff.email);
                 $('#clave_acceso').val(staff.clave_acceso);
+                $('#tipo_perfil').val(staff.tipo_perfil);
+                $('#id_sede').val(staff.id_sede);
 
                 $('#staffFormContainer').toggle();
                 $('#staffFormContainer').show();
@@ -153,7 +155,7 @@ $(document).ready(function() {
             error: function(data) {
                 var jsonResult = JSON.stringify(data);
                 localStorage.removeItem('auth_token');
-                $("#results").val("ERROR "+ data.responseJSON.message);
+                $("#results").val("ERROR "+ jsonResult);
             }
 
         });
@@ -171,5 +173,56 @@ $(document).ready(function() {
         $('#datatable').DataTable().ajax.reload();
     });
 
+    fillSedes('id_sede');
+    fillPaises('id_pais');
+
 });
 
+
+function fillSedes(idSelect)
+{
+    $('#'+idSelect).empty()
+    $.ajax({
+        type: "POST",
+        url: "/php/abm-sedes.php",
+        headers: {
+            //'x-auth-token': localStorage.accessToken,
+            //"Content-Type": "application/json"
+        },
+        dataType: 'json',
+        data: { 'action': 'list'  },
+        success: function(data){
+            data = data.data ;
+            console.log(data);
+            $.each(data, function(i, d) {
+                //console.log(i +' ->' + d)
+                $('#'+idSelect).append('<option value="' + d.id_sede + '">' + d.nombre + '</option>');
+            });
+        }
+    });
+
+}
+
+function fillPaises(idSelect)
+{
+    $('#'+idSelect).empty()
+    $.ajax({
+        type: "POST",
+        url: "/php/abm-paises.php",
+        headers: {
+            //'x-auth-token': localStorage.accessToken,
+            //"Content-Type": "application/json"
+        },
+        dataType: 'json',
+        data: { 'action': 'list'  },
+        success: function(data){
+            data = data.data ;
+            console.log(data);
+            $.each(data, function(i, d) {
+                //console.log(i +' ->' + d)
+                $('#'+idSelect).append('<option value="' + d.id_pais + '">' + d.nombre_corto + ' - '  + d.nombre + '</option>');
+            });
+        }
+    });
+
+}
