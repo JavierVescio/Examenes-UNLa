@@ -1,5 +1,5 @@
 <?php
-require_once 'constantes.php'
+require_once 'constantes.php';
 include_once APP_PATH . '/config.inc.php';
 include_once APP_PATH . '/Conexion.inc.php';
 include_once APP_PATH . '/RepositorioAlumnos.inc.php';
