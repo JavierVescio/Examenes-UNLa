@@ -14,7 +14,7 @@ class ControllerPais extends GenericController
         $this->map['update'] = 'create';
         $this->map['delete'] = 'delete' ;
         $this->map['list'] = 'listAll';
-        //$this->map['show'] = 'show';
+        $this->map['show'] = 'show';
 
     }
 

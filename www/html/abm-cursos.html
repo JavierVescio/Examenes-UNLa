@@ -7,7 +7,7 @@
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 
     <script src="../js/script.js"></script>
-    <script src="../js/abm-sedes.js"></script>
+    <script src="../js/abm-cursos.js"></script>
     <script src="../js/jquery-form-serializer.js"></script>
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" data-semver="3.1.1" data-require="bootstrap-css@3.1.1" />
@@ -19,17 +19,16 @@
 </head>
 
 <body>
-<h1>ABM de Sedes</h1>
+<h1>ABM de Cursos</h1>
 
-<!-- DATATABLE - LISTA SEDES -->
-<div id="sedes" class="container">
-    <table id="sedes-table" class="table table-striped table-bordered display">
+<!-- DATATABLE - LISTA Cursos -->
+<div id="cursos" class="container">
+    <table id="cursos-table" class="table table-striped table-bordered display">
         <thead>
         <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Direccion</th>
-            <th>Pais</th>
+            <th>Descripcion</th>
             <th>Anular</th>
             <th>Ver</th>
         </tr>
@@ -40,7 +39,6 @@
     </table>
 </div>
 
-
 <!-- BOTON NUEVO -->
 <div class="container">
     <div class="well">
@@ -48,27 +46,21 @@
     </div>
 </div>
 
-<!-- FORMULARIO DE SEDE -->
-<div class="container" id="sedeFormContainer" style="display: none">
+<!-- FORMULARIO DE CURSO -->
+<div class="container" id="cursoFormContainer" style="display: none">
  <div class="well">
-        <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-sedes.php">
+        <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-cursos.php">
 
             <fieldset>
-                <input type="text" style="display:none;"  class="form-control" id="id_sede" name="id_sede" value="" />
+                <input type="text" style="display:none;"  class="form-control" id="id_curso" name="id_curso" value="" />
                 <input type="hidden"  class="form-control" id="action" name="action" value="create" />
                 <div class="form-group col-xs-12 col-sm-6">
                     <label for="nombre" class="control-label">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Enter First Name">
+                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre del Curso">
                 </div>
                 <div class="form-group col-xs-12 col-sm-6">
-                    <label for="direccion" class="control-lable">Direccion</label>
-                    <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Ingrese direccion">
-                </div>
-
-                <div class="form-group col-xs-12 col-sm-12">
-                    <label for="id_pais" class="control-label">Paises</label>
-                    <select class="form-control" name="id_pais" id="id_pais" class="browser-default custom-select">
-                    </select>
+                    <label for="descripcion" class="control-lable">Descripcion</label>
+                    <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripcion del curso">
                 </div>
 
                 <div class="pull-right">

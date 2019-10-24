@@ -173,6 +173,15 @@ $(document).ready(function() {
         $('#datatable').DataTable().ajax.reload();
     });
 
+    $("#newButton").click(function(event) {
+        event.preventDefault();
+        var form = $('#ajaxForm');
+        form.get(0).reset();
+
+        $('#staffFormContainer').toggle();
+        $('#staffFormContainer').show();
+    });
+
     fillSedes('id_sede');
     fillPaises('id_pais');
 

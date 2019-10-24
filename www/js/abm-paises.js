@@ -4,12 +4,13 @@ $(document).ready(function() {
     //alert("TEST");
 
     // Armo la DATATABLE de los administradores : peticion ajax, mapeando JSON recibido y columnas
-    var table = $('#sedes-table').DataTable({
+    var table = $('#paises-table').DataTable({
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
+
         "ajax": {
-            "url":"/php/abm-sedes.php", //# TODO armar url
+            "url":"/php/abm-paises.php", //# TODO armar url
             /*"beforeSend": function (request) {
                 request.setRequestHeader("Authorization", "Token "+token);
             },*/
@@ -27,10 +28,9 @@ $(document).ready(function() {
         },
 
         "columns": [
-            { "data": "id_sede"},
-            { "data": "nombre"},
-            { "data": "direccion"},
             { "data": "id_pais"},
+            { "data": "nombre"},
+            { "data": "nombre_corto"},
             {
                 //"targets": -1,
                 "data": null,
@@ -49,17 +49,17 @@ $(document).ready(function() {
         ],
     });
 
-    $('#sedes-table tbody').on( 'click', 'button.btn-view', function () {
+    $('#paises-table tbody').on( 'click', 'button.btn-view', function () {
         var data = table.row( $(this).parents('tr') ).data();
 
         //alert('DEberia cargar el form con los datos');
         var datos = {
             'action' : "show",
-            'id_sede' : data.id_sede
+            'id_pais' : data.id_pais
         };
 
         $.ajax({
-            url: '/php/abm-sedes.php',//# TODO armar url
+            url: '/php/abm-paises.php',//# TODO armar url
             type: 'POST',
             data: datos,
             dataSrc: 'data',
@@ -71,31 +71,30 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(data) {
 
-                var sede = data.data[0];
+                var pais = data.data[0];
 
                 // Muestro en el recuadro los resultados para debug
-                var jsonResult = JSON.stringify(sede);
+                var jsonResult = JSON.stringify(pais);
                 $("#results").val(unescape(jsonResult));
 
                 // Seteo los campos del formulario
-                $('#id_sede').val(sede.id_sede);
-                $('#nombre').val(sede.nombre);
-                $('#direccion').val(sede.direccion);
-                $('#id_pais').val(sede.id_pais);
+                $('#id_pais').val(pais.id_pais);
+                $('#nombre').val(pais.nombre);
+                $('#nombre_corto').val(pais.nombre_corto);
 
-                $('#sedeFormContainer').toggle();
-                $('#sedeFormContainer').show();
+                $('#paisFormContainer').toggle();
+                $('#paisFormContainer').show();
 
             }
         })
+
     } )
 
     // Evento eliminar asociado a cada ROW de la tabla
-    $('#sedes-table tbody').on( 'click', 'button.btn-cancel', function () {
+    $('#paies-table tbody').on( 'click', 'button.btn-cancel', function () {
         var data = table.row( $(this).parents('tr') ).data();
 
-        var datos = {
-            'action' : "delete",
+        var datos = { 'action' : "delete",
             'id_sede' : data.id_sede
         };
 
@@ -113,7 +112,7 @@ $(document).ready(function() {
                 alert(" Eliminado sede ");
                 var jsonResult = JSON.stringify(data);
                 $("#results").val(unescape(jsonResult));
-                $('#sedes-table').DataTable().ajax.reload();
+                $('#sede-table').DataTable().ajax.reload();
             },
             error: function(data) {
                 alert(" ERROR Eliminando sede ");
@@ -157,7 +156,7 @@ $(document).ready(function() {
         var jsonData = $(form).serializeObject();
         console.log(jsonData);
         ajaxCallRequest(method, url, jsonData);
-        $('#sedes-table').DataTable().ajax.reload();
+        $('#paises-table').DataTable().ajax.reload();
     });
 
     $("#newButton").click(function(event) {
@@ -165,35 +164,12 @@ $(document).ready(function() {
         var form = $('#ajaxForm');
         form.get(0).reset();
 
-        $('#sedeFormContainer').toggle();
-        $('#sedeFormContainer').show();
+        $('#paisFormContainer').toggle();
+        $('#paisFormContainer').show();
     });
 
-    fillPaises('id_pais');
+
 
 });
 
 
-function fillPaises(idSelect)
-{
-    $('#'+idSelect).empty()
-    $.ajax({
-        type: "POST",
-        url: "/php/abm-paises.php",
-        headers: {
-            //'x-auth-token': localStorage.accessToken,
-            //"Content-Type": "application/json"
-        },
-        dataType: 'json',
-        data: { 'action': 'list'  },
-        success: function(data){
-            data = data.data ;
-            console.log(data);
-            $.each(data, function(i, d) {
-                //console.log(i +' ->' + d)
-                $('#'+idSelect).append('<option value="' + d.id_pais + '">' + d.nombre_corto + ' - '  + d.nombre + '</option>');
-            });
-        }
-    });
-
-}
