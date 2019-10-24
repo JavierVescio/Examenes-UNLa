@@ -8,9 +8,9 @@ class ControllerAlumno extends GenericController
 {
 // Mapea 'action' -> 'metodo_asociado'
     protected function mapActions(){
-        /*$this->map['create'] = 'create';
+        $this->map['create'] = 'create';
         $this->map['update'] = 'create';
-        $this->map['delete'] = 'delete' ; */
+        $this->map['delete'] = 'delete' ;
         $this->map['list'] = 'listAll';
         $this->map['show'] = 'show';
 
@@ -48,5 +48,36 @@ class ControllerAlumno extends GenericController
 
         return json_encode($response);
 
+    }
+
+    public function create(){
+        $alumno = Alumno::buildFromArray($this->params);
+        $status = RepositorioAlumnos::insertOrUpdate(Conexion::getConexion(),$alumno);
+
+        if($status){
+            $response['status'] = 'success';
+            $response['message'] = 'Alumno creado correctamente';
+        }else{
+            $response['status'] = 'failed';
+            $response['message'] = 'No pudo crearse Alumno';
+        }
+        return json_encode($response);
+    }
+
+    public function delete(){
+        if(!array_key_exists('id_alumno', $this->params))
+            throw  new Exception(self::class . ' delete - id_alumno no definido ');
+
+        $id_alumno = $this->params['id_alumno'];
+        $status = RepositorioAlumnos::delete(Conexion::getConexion(),$id_alumno);
+
+        if($status){
+            $response['status'] = 'success';
+            $response['message'] = 'Alumno eliminado correctamente';
+        }else{
+            $response['status'] = 'failed';
+            $response['message'] = 'Error al eliminar Alumno';
+        }
+        return json_encode($response);
     }
 }

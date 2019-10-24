@@ -9,9 +9,9 @@ class ControllerCurso extends GenericController
 {
     // Mapea 'action' -> 'metodo_asociado'
     protected function mapActions(){
-        /*$this->map['create'] = 'create';
+        $this->map['create'] = 'create';
         $this->map['update'] = 'create';
-        $this->map['delete'] = 'delete' ; */
+        $this->map['delete'] = 'delete' ;
         $this->map['list'] = 'listAll';
         $this->map['show'] = 'show';
 
@@ -49,6 +49,37 @@ class ControllerCurso extends GenericController
 
         return json_encode($response);
 
+    }
+
+    public function create(){
+        $curso = Curso::buildFromArray($this->params);
+        $status = RepositorioCurso::insertOrUpdate(Conexion::getConexion(),$curso);
+
+        if($status){
+            $response['status'] = 'success';
+            $response['message'] = 'Curso creado correctamente';
+        }else{
+            $response['status'] = 'failed';
+            $response['message'] = 'Error al crear Curso';
+        }
+        return json_encode($response);
+    }
+
+    public function delete(){
+        if(!array_key_exists('id_curso', $this->params))
+            throw  new Exception(self::class . ' delete - id_curso no definido ');
+
+        $id_curso = $this->params['id_curso'];
+        $status = RepositorioCurso::delete(Conexion::getConexion(),$id_curso);
+
+        if($status){
+            $response['status'] = 'success';
+            $response['message'] = 'Curso eliminado correctamente';
+        }else{
+            $response['status'] = 'failed';
+            $response['message'] = 'Error al eliminar Curso';
+        }
+        return json_encode($response);
     }
 
 }

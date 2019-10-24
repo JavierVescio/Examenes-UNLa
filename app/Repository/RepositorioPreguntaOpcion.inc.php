@@ -5,7 +5,7 @@ class RepositorioPreguntaOpcion
 {
 
     /**
-     * @return PreguntaOpcion
+     * @return PreguntaOpcion[]
      */
     public static function findById($conexion, $id_opcion = null)  {
         $list = array();
@@ -149,6 +149,46 @@ class RepositorioPreguntaOpcion
         }
 
         return $result;
+    }
+
+    public static function findByPregunta($conexion, $id_pregunta )  {
+        $list = array();
+        if (isset($conexion)) {
+            try {
+                $sql = "SELECT `preguntas_opciones`.`id_opcion`,
+                            `preguntas_opciones`.`id_pregunta`,
+                            `preguntas_opciones`.`descripcion`,
+                            `preguntas_opciones`.`es_correcta`
+                        FROM `royal_academy`.`preguntas_opciones`
+                       ";
+
+                if(!is_null($id_pregunta)) {
+                    $sql = $sql . " WHERE `id_pregunta` = :id_pregunta;";
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bindParam(':id_pregunta', $id_pregunta, PDO::PARAM_INT);
+
+                }else {
+                    throw new Exception("No se define id_pregunta para traer las opciones asociadas");
+
+                }
+                $stmt->execute();
+                $result = $stmt->fetchAll();
+
+                if (!empty($result)) {
+                    foreach ($result as $data){
+                        $result = PreguntaOpcion::buildFromArray($data);
+                        $list[] = $data;
+                    }
+                }
+
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $list = null;
+
+            }
+        }
+        return $list;
+
     }
 
 

@@ -98,7 +98,7 @@ class RepositorioAlumnos{
                 
                 if (!empty($resultado)){
                     //$alumnos[] = new Alumno($fila['id'],$fila['nombre'],$fila['email'],$fila['password'],$fila['$fecha_registro'],$fila['activo']);                    
-                    $alumno = new Alumno(
+                    $alumno = Alumno::buildFromArray($resultado);/*
                             $resultado['id_alumno'],
                             $resultado['apellido'],
                             $resultado['nombre'],
@@ -109,7 +109,7 @@ class RepositorioAlumnos{
                             $resultado['clave_acceso'],
                             $resultado['id_sede_inscripcion'],
                             $resultado['id_staff_inscripcion'],
-                            $resultado['fecha_alta']);
+                            $resultado['fecha_alta']);*/
                 }
                 
                 
@@ -119,5 +119,126 @@ class RepositorioAlumnos{
         }
         
         return $alumno;
+    }
+
+    public static function delete($conexion, $id_alumno = null) {
+        $result = true ;
+        if (isset($conexion) && !is_null($id_alumno)) {
+            try {
+                $sql = "DELETE FROM `royal_academy`.`alumnos` WHERE `id_alumno` = :id_alumno ;";
+                $sentencia = $conexion->prepare($sql);
+                $sentencia->bindParam(':id_alumno',$id_alumno,PDO::PARAM_INT);
+
+                $sentencia->execute();
+
+                $result = true ;
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $result = false;
+            }
+        }
+        return $result;
+    }
+
+    public static function insert($conexion, Alumno $alumno) {
+
+        $result = true ;
+        if (isset($conexion)) {
+            try {
+                $sql = "INSERT INTO `royal_academy`.`alumnos`
+                            (`apellido`, `nombre`, `genero`, `tipo_doc`, `documento`,
+                            `email`, `celular`, `clave_acceso`,  `id_sede_inscripcion`,
+                            `id_staff_inscripcion`, `fecha_alta`)
+                        VALUES
+                            (:apellido , :nombre, :genero , :tipo_doc , :documento, 
+                            :email, :celular, :clave_acceso, :id_sede_inscripcion,
+                            :id_staff_inscripcion, :fecha_alta);
+                        ";
+                $sentencia = $conexion->prepare($sql);
+                $sentencia->bindParam(':apellido',$alumno->getApellido(),PDO::PARAM_STR);
+                $sentencia->bindParam(':nombre',$alumno->getNombre(),PDO::PARAM_STR);
+                // TODO agregar genero a Alumno
+                $sentencia->bindParam(':genero','M'/*$alumno->getGenero()*/,PDO::PARAM_STR);
+                $sentencia->bindParam(':tipo_doc',$alumno->getTipo_doc(),PDO::PARAM_STR);
+                $sentencia->bindParam(':documento',$alumno->getDocumento(),PDO::PARAM_STR);
+                $sentencia->bindParam(':email',$alumno->getEmail(),PDO::PARAM_STR);
+                $sentencia->bindParam(':celular',$alumno->getCelular(),PDO::PARAM_STR);
+                $sentencia->bindParam(':clave_acceso',$alumno->getClave_acceso(),PDO::PARAM_STR);
+                $sentencia->bindParam(':id_sede_inscripcion',$alumno->getId_sede_inscripcion(),PDO::PARAM_INT);
+                $sentencia->bindParam(':id_staff_inscripcion',$alumno->getId_staff_inscripcion(),PDO::PARAM_INT);
+                $sentencia->bindParam(':fecha_alta',$alumno->getFecha_alta(),PDO::PARAM_STR);
+
+                $sentencia->execute();
+
+                $result = true ;
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $result = false;
+            }
+        }
+        return $result;
+    }
+
+    public static function update($conexion, Alumno $alumno) {
+        $result = false;
+        if (isset($conexion)) {
+            try {
+                $sql = "UPDATE `royal_academy`.`alumnos`
+                        SET
+                        `apellido` = :apellido,
+                        `nombre` = :nombre,
+                        `genero` = :genero,
+                        `tipo_doc` = :tipo_doc,
+                        `documento` = :documento,
+                        `email` = :email,
+                        `celular` = :celular,
+                        `clave_acceso` = :clave_acceso,
+                        `id_sede_inscripcion` = :id_sede_inscripcion,
+                        `id_staff_inscripcion` = :id_staff_inscripcion,
+                        `fecha_alta` = :fecha_alta
+                        WHERE `id_alumno` = :id_alumno;
+                        ";
+
+                $sentencia = $conexion->prepare($sql);
+                $sentencia->bindParam(':apellido',$alumno->getApellido(),PDO::PARAM_STR);
+                $sentencia->bindParam(':nombre',$alumno->getNombre(),PDO::PARAM_STR);
+                // TODO agregar genero a Alumno
+                $sentencia->bindParam(':genero','M'/*$alumno->getGenero()*/,PDO::PARAM_STR);
+                $sentencia->bindParam(':tipo_doc',$alumno->getTipo_doc(),PDO::PARAM_STR);
+                $sentencia->bindParam(':documento',$alumno->getDocumento(),PDO::PARAM_STR);
+                $sentencia->bindParam(':email',$alumno->getEmail(),PDO::PARAM_STR);
+                $sentencia->bindParam(':celular',$alumno->getCelular(),PDO::PARAM_STR);
+                $sentencia->bindParam(':clave_acceso',$alumno->getClave_acceso(),PDO::PARAM_STR);
+                $sentencia->bindParam(':id_sede_inscripcion',$alumno->getId_sede_inscripcion(),PDO::PARAM_INT);
+                $sentencia->bindParam(':id_staff_inscripcion',$alumno->getId_staff_inscripcion(),PDO::PARAM_INT);
+                $sentencia->bindParam(':fecha_alta',$alumno->getFecha_alta(),PDO::PARAM_STR);
+
+                $sentencia->bindParam(':id_alumno',$alumno->getId_alumno(),PDO::PARAM_INT);
+                $sentencia->execute();
+
+                $result = true ;
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $result = false;
+            }
+        }
+        return $result;
+    }
+
+    public static function insertOrUpdate($conexion, Alumno $alumno) {
+        $result = false;
+        if (isset($conexion)) {
+            try {
+                if(is_null($alumno->getId_alumno()) or $alumno->getId_alumno() == 0)
+                    $result = self::insert($conexion,$alumno);
+                else
+                    $result = self::update($conexion,$alumno);
+
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $result = false;
+            }
+        }
+        return $result;
     }
 }

@@ -42,7 +42,7 @@ class ControllerPregunta extends GenericController
             $response['message'] = 'Pregunta eliminada correctamente';
         }else{
             $response['status'] = 'failed';
-            $response['message'] = 'Pregunta al eliminar Staff';
+            $response['message'] = 'Error al eliminar Pregunta';
         }
         return json_encode($response);
     }

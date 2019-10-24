@@ -16,7 +16,7 @@ class RepositorioPais
                         FROM `royal_academy`.`paises`
                        ";
 
-                if(!is_null($id_sede)) {
+                if(!is_null($id_pais)) {
                     $sql = $sql . " WHERE `id_pais` = :id_pais;";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bindParam(':id_pais', $id_pais, PDO::PARAM_INT);

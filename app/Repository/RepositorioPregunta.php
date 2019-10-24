@@ -5,7 +5,7 @@ class RepositorioPregunta
 {
 
     /**
-     * @return Pregunta
+     * @return Pregunta[]
      */
     public static function findById($conexion, $id_pregunta = null)  {
         $list = array();

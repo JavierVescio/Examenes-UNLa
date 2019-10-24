@@ -6,7 +6,7 @@ class RepositorioPreguntaImagen
 
 
     /**
-     * @return PreguntaImagen
+     * @return PreguntaImagen[]
      */
     public static function findById($conexion, $id_imagen = null)  {
         $list = array();
@@ -151,5 +151,47 @@ class RepositorioPreguntaImagen
         return $result;
     }
 
+    /**
+     * @return PreguntaImagen[]
+     */
+    public static function findByPregunta($conexion, $id_pregunta )  {
+        $list = array();
+        if (isset($conexion)) {
+            try {
+                $sql = "SELECT `preguntas_imagenes`.`id_pregunta_imagen`,
+                            `preguntas_imagenes`.`path`,
+                            `preguntas_imagenes`.`descripcion`,
+                            `preguntas_imagenes`.`id_pregunta`
+                        FROM `royal_academy`.`preguntas_imagenes`
+                       ";
+
+                if(!is_null($id_pregunta)) {
+                    $sql = $sql . " WHERE `id_pregunta` = :id_pregunta;";
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bindParam(':id_pregunta', $id_pregunta, PDO::PARAM_INT);
+
+                }else {
+                    throw new Exception("No se define id_pregunta para recuperar imagenes asociadas");
+
+                }
+                $stmt->execute();
+                $result = $stmt->fetchAll();
+
+                if (!empty($result)) {
+                    foreach ($result as $data){
+                        $result = PreguntaImagen::buildFromArray($data);
+                        $list[] = $data;
+                    }
+                }
+
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $list = null;
+
+            }
+        }
+        return $list;
+
+    }
 
 }
