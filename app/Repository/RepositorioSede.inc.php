@@ -15,11 +15,11 @@ class RepositorioSede
                             `sedes`.`nombre`,
                             `sedes`.`direccion`,
                             `sedes`.`id_pais`
-                        FROM `royal_academy`.`sedes`;
+                        FROM `royal_academy`.`sedes` 
                        ";
 
                 if(!is_null($id_sede)) {
-                    $sql = $sql . " WHERE `id_sede` = :id_sede;";
+                    $sql = $sql . " WHERE `id_sede` = :id_sede ;";
                     $stmt = $conexion->prepare($sql);
                     $stmt->bindParam(':id_sede', $id_sede, PDO::PARAM_INT);
 
@@ -116,7 +116,7 @@ class RepositorioSede
                 $sentencia->bindParam(':direccion',$sede->getDireccion(),PDO::PARAM_STR);
                 $sentencia->bindParam(':id_pais',$sede->getIdPais(),PDO::PARAM_INT);
 
-                $sentencia->bindParam(':id_staff',$sede->getIdStaff(),PDO::PARAM_INT);
+                $sentencia->bindParam(':id_sede',$sede->getIdSede(),PDO::PARAM_INT);
                 $sentencia->execute();
 
                 $result = true ;

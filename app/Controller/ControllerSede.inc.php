@@ -36,13 +36,13 @@ class ControllerSede extends GenericController
     public function show(){
         if(!array_key_exists('id_sede', $this->params))
             throw  new Exception(self::class . ' show - id_sede no definido ');
-        $id_sede = $this->params['id_sede'];
+        $id_sede = (int)$this->params['id_sede'];
 
-        $staff = RepositorioSede::findById(Conexion::getConexion(), $id_sede);
+        $sede = RepositorioSede::findById(Conexion::getConexion(), $id_sede);
 
-        if(!is_null($staff)){
+        if(!is_null($sede)){
             $response['status'] = 'success';
-            $response['data'] = $staff;
+            $response['data'] = $sede;
         }else{
             $response['status'] = 'failed';
             $response['message'] = 'Error al buscar sede con ID: ' + $id_sede;

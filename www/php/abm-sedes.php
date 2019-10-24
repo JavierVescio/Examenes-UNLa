@@ -7,5 +7,11 @@ Conexion::abrir_conexion();
 // TODO Verificar logueo y perfil
 
 $controller = new ControllerSede();
-$controller->post($_POST);
+/*
+$fake_post = array(
+    'action' => 'show',
+    'id_sede' => '3'
+);
+*/
+$controller->post($_POST );
 echo $controller->run();
