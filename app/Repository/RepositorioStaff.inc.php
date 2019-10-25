@@ -1,5 +1,5 @@
 <?php
-
+require_once APP_PATH . '/Entity/Staff.inc.php';
 
 class RepositorioStaff {
 
@@ -64,6 +64,33 @@ class RepositorioStaff {
         return $listStaff;
 
     }
+    
+     public static function obtener_staff_por_email($conexion,$email) {
+        $staff = null;
+        
+        if (isset($conexion)) {
+            try {
+                //include_once 'Alumno.inc.php';
+                
+                $sql = "SELECT * FROM staff WHERE email = :email";
+                $sentencia = $conexion->prepare($sql);
+                $sentencia-> bindParam(':email',$email,PDO::PARAM_STR);
+                $sentencia->execute();
+                $resultado = $sentencia->fetch(); //no hace falta fetchall, xq dara un unico resultado
+                
+                if (!empty($resultado)){
+                    $staff = Staff::buildFromArray($resultado);
+                }
+                
+                
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+            }
+        }
+        
+        return $staff;
+    }
+    
     public static function listAll($conexion){
         return self::findById($conexion);
     }

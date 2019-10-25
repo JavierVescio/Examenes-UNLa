@@ -9,11 +9,7 @@
         if (!isset($titulo) || empty($titulo)){
             $titulo = "Gestor de Exámenes";
         }
-        
-        //echo "<title>$titulo</title>"; //Asi lo hacen en el curso pero no me gusta
         ?>
-        
-        <!--Esta forma se me ocurrio a mi, me parece mas clara y funciona-->
         <title> 
             <?php
                 echo $titulo;
