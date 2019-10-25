@@ -55,7 +55,7 @@ class RepositorioPreguntaOpcion
     }
 
     public static function delete($conexion, $id_opcion = null) {
-        $result = true ;
+        $result = false ;
         if (isset($conexion) && !is_null($id_opcion)) {
             try {
                 $sql = "DELETE FROM `royal_academy`.`preguntas_opciones`  WHERE `id_opcion` = :id_opcion;";

@@ -103,20 +103,15 @@ $(document).ready(function() {
             url: '/php/abm-cursos.php',//# TODO armar url
             type: 'POST',
             data: datos,
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
             //dataType: 'json',
             success: function(data) {
-                alert(" Eliminado sede ");
+                alert(" Eliminado curso ");
                 var jsonResult = JSON.stringify(data);
                 $("#results").val(unescape(jsonResult));
                 $('#cursos-table').DataTable().ajax.reload();
             },
             error: function(data) {
-                alert(" ERROR Eliminando sede ");
+                alert(" ERROR Eliminando curso ");
                 var jsonResult = JSON.stringify(data);
                 $("#results").val( "ERROR " + unescape(jsonResult));
 

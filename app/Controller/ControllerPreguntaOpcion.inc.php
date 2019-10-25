@@ -12,6 +12,7 @@ class ControllerPreguntaOpcion extends GenericController
         $this->map['delete'] = 'delete' ;
         $this->map['list'] = 'listAll';
         $this->map['show'] = 'show';
+        $this->map['listFromQuestion'] = 'listFromQuestion';
 
     }
 
@@ -31,11 +32,11 @@ class ControllerPreguntaOpcion extends GenericController
     }
 
     public function delete(){
-        if(!array_key_exists('id_pregunta_opcion', $this->params))
-            throw  new Exception(self::class . ' delete - id_pregunta_opcion no definido ');
+        if(!array_key_exists('id_opcion', $this->params))
+            throw  new Exception(self::class . ' delete - id_opcion no definido ');
 
-        $id_pregunta_opcion = $this->params['id_pregunta_opcion'];
-        $status = RepositorioPreguntaOpcion::delete(Conexion::getConexion(),$id_pregunta_opcion);
+        $id_opcion = $this->params['id_opcion'];
+        $status = RepositorioPreguntaOpcion::delete(Conexion::getConexion(),$id_opcion);
 
         if($status){
             $response['status'] = 'success';
@@ -61,20 +62,38 @@ class ControllerPreguntaOpcion extends GenericController
 
     }
 
-    public function show(){
-
-        if(!array_key_exists('id_pregunta_imagen', $this->params))
-            throw  new Exception(self::class . ' show - id_pregunta_imagen no definido ');
-        $id_pregunta_imagen = $this->params['id_pregunta_imagen'];
-
-        $preguntaImagen = RepositorioPreguntaImagen::findById(Conexion::getConexion(), $id_pregunta_imagen);
-
-        if(!is_null($preguntaImagen)){
+    public function listFromQuestion(){
+        if(!array_key_exists('id_pregunta', $this->params) || is_null($this->params['id_pregunta'])  )
+            throw  new Exception(self::class . ' listFromQuestion - id_pregunta no definido ');
+        $id_pregunta = $this->params['id_pregunta'];
+        error_log("ID DE PREGUNTA $id_pregunta");
+        $lista = RepositorioPreguntaOpcion::findByPregunta(Conexion::getConexion(), $id_pregunta);
+        if(!is_null($lista)){
             $response['status'] = 'success';
-            $response['data'] = $preguntaImagen;
+            $response['data'] = $lista;
         }else{
             $response['status'] = 'failed';
-            $response['message'] = 'Error al buscar imagen de pregunta';
+            $response['message'] = 'Error al listar opciones de la pregunta';
+        }
+
+        return json_encode($response);
+
+    }
+
+    public function show(){
+
+        if(!array_key_exists('id_opcion', $this->params))
+            throw  new Exception(self::class . ' show - id_opcion no definido ');
+        $id_pregunta_opcion = $this->params['id_opcion'];
+
+        $preguntaOpcion = RepositorioPreguntaOpcion::findById(Conexion::getConexion(), $id_pregunta_opcion);
+
+        if(!is_null($preguntaOpcion)){
+            $response['status'] = 'success';
+            $response['data'] = $preguntaOpcion;
+        }else{
+            $response['status'] = 'failed';
+            $response['message'] = 'Error al buscar opcion de pregunta';
         }
 
         return json_encode($response);
