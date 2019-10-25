@@ -4,6 +4,7 @@ include_once APP_PATH . '/Conexion.inc.php';
 include_once APP_PATH . '/Repository/RepositorioAlumnos.inc.php';
 include_once APP_PATH . '/ControlSesion.inc.php';
 include_once APP_PATH . '/config.inc.php';
+include_once APP_PATH . '/config-rutas.inc.php';
 
 Conexion :: abrir_conexion();
 ?>
@@ -26,11 +27,16 @@ Conexion :: abrir_conexion();
             </ul> <!-- lista desordenada -->
             <ul class="nav navbar-nav navbar-right">
                 <?php
-                if (ControlSesion::sesion_iniciada_alumno()) {?>
+                if (ControlSesion::sesion_iniciada_alumno() || ControlSesion::sesion_iniciada_staff()) {?>
                     <li>
                         <a href="#">
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                            <?php echo ' ' . $_SESSION['nombre_alumno'] . ' (Alumno)'; ?>
+                            <?php if (ControlSesion::sesion_iniciada_alumno()){
+                                echo ' ' . $_SESSION['nombre_alumno'] . ' (Alumno)'; 
+                            }else{
+                                echo ' ' . $_SESSION['nombre_staff'] . ' (Staff)'; 
+                            }
+                            ?>
                         </a>
                     </li>
                     <li>
@@ -42,7 +48,7 @@ Conexion :: abrir_conexion();
                     <?php
                 } else {
                     ?>
-                    <li><a href="<?php echo RUTA_LOGIN ?>"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Iniciar sesión</a></li>
+                    <!--<li><a href="<?php /*echo RUTA_LOGIN*/ ?>"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Iniciar sesión</a></li>-->
                     <?php }
                     ?>
             </ul>

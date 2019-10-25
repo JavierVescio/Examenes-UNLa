@@ -2,7 +2,7 @@
 require_once 'constantes.php';
 include_once APP_PATH . '/config.inc.php';
 include_once APP_PATH . '/Conexion.inc.php';
-include_once APP_PATH . '/RepositorioAlumnos.inc.php';
+include_once APP_PATH . '/Repository/RepositorioAlumnos.inc.php';
 include_once APP_PATH . '/ValidadorLogin.inc.php';
 include_once APP_PATH . '/ControlSesion.inc.php';
 include_once APP_PATH . '/Redireccion.inc.php';
@@ -10,12 +10,19 @@ include_once APP_PATH . '/Redireccion.inc.php';
 if (ControlSesion::sesion_iniciada_alumno()) {
 
     //Procedemos a cerrar la sesion
-    $nombre_alumno = $_SESSION['nombre_alumno'];
+    $nombre = $_SESSION['nombre_alumno'];
     
     ControlSesion::cerrar_sesion_alumno();
+} else if (ControlSesion::sesion_iniciada_staff()) {
+
+    //Procedemos a cerrar la sesion
+    $nombre = $_SESSION['nombre_staff'];
+    
+    ControlSesion::cerrar_sesion_staff();
 } else {
     Redireccion::redirigir(SERVIDOR); //Un usuario sin sesion que quiere cerrar sesion, lo redirigimos.
 }
+
 
 $titulo = 'Logout';
 
@@ -32,7 +39,7 @@ include_once WWW_PATH . '/plantillas/navbar.inc.php';
                     <h4>Sesión cerrada</h4>
                 </div>
                 <div class="panel-body">
-                    <p>Esperamos que vuelvas pronto <?php echo $nombre_alumno?>.</p>
+                    <p>Esperamos que vuelvas pronto <?php echo $nombre?>.</p>
                     <br>
                     <div class="text-center">
                         <a href="<?php echo RUTA_LOGIN ?>">Iniciar sesión</a>
