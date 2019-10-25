@@ -64,7 +64,18 @@ if (ControlSesion::sesion_iniciada_staff()){
                     <a class="btn btn-default form-control" href="<?php echo RUTA_ABM_SEDES ?>" role="button">Gestionar</a>
                 </div>
             </div>
-        </div>        
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Preguntas
+                </div>
+                <div class="panel-body">
+                    <p>Gestionar las preguntas y sus opciones.</p>
+                    <a class="btn btn-default form-control" href="<?php echo RUTA_ABM_OPCIONES ?>" role="button">Gestionar</a>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
