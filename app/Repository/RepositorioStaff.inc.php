@@ -1,5 +1,5 @@
 <?php
-require_once APP_PATH . '/Entity/Staff.inc.php';
+//require_once APP_PATH . '/Entity/Staff.inc.php';
 
 class RepositorioStaff {
 
