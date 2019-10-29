@@ -8,22 +8,18 @@ $(document).ready(function() {
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
+        info: false,
+        retrieve: false,
+        bPaginate: false,
+        oLanguage:{
+            "sSearch": "Buscar: "
+        },
         "ajax": {
             "url":"/php/abm-sedes.php", //# TODO armar url
-            /*"beforeSend": function (request) {
-                request.setRequestHeader("Authorization", "Token "+token);
-            },*/
             "type": "POST",
-            //"dataSrc": "data",
             "data": {
               'action': 'list'
             },
-            /*"success": function(d){
-              console.log(d);
-            },
-            "error": function(d){
-                console.log(d);
-            }*/
         },
 
         "columns": [
@@ -42,7 +38,7 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#sedeModal'>Ver!</button>" ;
                 }
             }
 
@@ -83,8 +79,7 @@ $(document).ready(function() {
                 $('#direccion').val(sede.direccion);
                 $('#id_pais').val(sede.id_pais);
 
-                $('#sedeFormContainer').toggle();
-                $('#sedeFormContainer').show();
+
 
             }
         })
@@ -158,6 +153,8 @@ $(document).ready(function() {
         console.log(jsonData);
         ajaxCallRequest(method, url, jsonData);
         $('#sedes-table').DataTable().ajax.reload();
+        $('#sedeModal').modal('toggle');
+
     });
 
     $("#newButton").click(function(event) {
@@ -165,8 +162,6 @@ $(document).ready(function() {
         var form = $('#ajaxForm');
         form.get(0).reset();
 
-        $('#sedeFormContainer').toggle();
-        $('#sedeFormContainer').show();
     });
 
     fillPaises('id_pais');

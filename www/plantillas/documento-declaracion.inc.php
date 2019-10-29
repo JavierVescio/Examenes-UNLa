@@ -18,6 +18,11 @@
         
         <link href="/css/bootstrap.min.css" rel="stylesheet">
         <link href="/css/estilos.css" rel="stylesheet">
+        <?php
+            $panel = $_GET['panel'];
+            foreach ($paneles[$panel]['css'] as $css_doc)
+                echo "<link href='/css/" . $css_doc. "' rel='stylesheet'>";
+        ?>
 
     </head>
     <body>

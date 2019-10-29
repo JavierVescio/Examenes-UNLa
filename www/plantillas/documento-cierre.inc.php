@@ -6,5 +6,12 @@
 </nav>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
+<?php
+$panel = $_GET['panel'];
+foreach ($paneles[$panel]['js'] as $js_doc)
+    echo "<script src='/js/" . $js_doc . "' ></script>";
+?>
+
 </body>
 </html>

@@ -1,7 +1,6 @@
 
 
 $(document).ready(function() {
-    //alert("TEST");
 
     // Armo la DATATABLE de los administradores : peticion ajax, mapeando JSON recibido y columnas
     var table = $('#datatable').DataTable({
@@ -9,22 +8,18 @@ $(document).ready(function() {
         "order": [[ 0, "desc" ]],
         "processing": true,
         "serverSide": true,
+        info: false,
+        retrieve: false,
+        bPaginate: false,
+        oLanguage:{
+            "sSearch": "Buscar: "
+        },
         "ajax": {
             "url":"/php/abm-admins.php", //# TODO armar url
-            /*"beforeSend": function (request) {
-                request.setRequestHeader("Authorization", "Token "+token);
-            },*/
             "type": "POST",
-            //"dataSrc": "data",
             "data": {
               'action': 'list'
             },
-            /*"success": function(d){
-              console.log(d);
-            },
-            "error": function(d){
-                console.log(d);
-            }*/
         },
 
         "columns": [
@@ -38,7 +33,6 @@ $(document).ready(function() {
             {
                 //"targets": -1,
                 "data": null,
-                //"defaultContent": "<button id='cancel' class='btn btn-primary btn-lg btn-block btn-cancel'>Cancelar!</button>"
                 'render': function (data, type, row) {
                     return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>Eliminar!</button>" ;
                 }
@@ -46,9 +40,8 @@ $(document).ready(function() {
             {
                 //"targets": -1,
                 "data": null,
-                //"defaultContent": "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view'>Ver!</button>",
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#adminModal'>Ver!</button>" ;
                 }
             }
 
@@ -69,11 +62,6 @@ $(document).ready(function() {
             type: 'POST',
             data: datos,
             dataSrc: 'data',
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
             dataType: 'json',
             success: function(data) {
 
@@ -94,14 +82,8 @@ $(document).ready(function() {
                 $('#tipo_perfil').val(staff.tipo_perfil);
                 $('#id_sede').val(staff.id_sede);
 
-                $('#staffFormContainer').toggle();
-                $('#staffFormContainer').show();
-                //$('#formContainer').modal('toggle');
-                //$('#formContainer').modal('show');
-                //$('#datatable').DataTable().ajax.reload();
             }
         })
-        //document.location.href = "reserva_open.html";
     } )
 
     // Evento eliminar asociado a cada ROW de la tabla
@@ -116,11 +98,6 @@ $(document).ready(function() {
             url: '/php/abm-admins.php',//# TODO armar url
             type: 'POST',
             data: datos,
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
             //dataType: 'json',
             success: function(data) {
                 alert(" Eliminado administrador ");
@@ -171,6 +148,7 @@ $(document).ready(function() {
         console.log(jsonData);
         ajaxCallRequest(method, url, jsonData);
         $('#datatable').DataTable().ajax.reload();
+        $('#adminModal').modal('toggle');
     });
 
     $("#newButton").click(function(event) {
@@ -218,10 +196,6 @@ function fillPaises(idSelect)
     $.ajax({
         type: "POST",
         url: "/php/abm-paises.php",
-        headers: {
-            //'x-auth-token': localStorage.accessToken,
-            //"Content-Type": "application/json"
-        },
         dataType: 'json',
         data: { 'action': 'list'  },
         success: function(data){

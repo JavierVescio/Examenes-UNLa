@@ -8,23 +8,19 @@ $(document).ready(function() {
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
-
+        info: false,
+        retrieve: false,
+        bPaginate: true,
+        oLanguage:{
+            "sSearch": "Buscar: "
+        },
         "ajax": {
             "url":"/php/abm-cursos.php", //# TODO armar url
-            /*"beforeSend": function (request) {
-                request.setRequestHeader("Authorization", "Token "+token);
-            },*/
             "type": "POST",
             //"dataSrc": "data",
             "data": {
               'action': 'list'
             },
-            /*"success": function(d){
-              console.log(d);
-            },
-            "error": function(d){
-                console.log(d);
-            }*/
         },
 
         "columns": [
@@ -42,7 +38,7 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#cursoModal'>Ver!</button>" ;
                 }
             }
 
@@ -63,14 +59,8 @@ $(document).ready(function() {
             type: 'POST',
             data: datos,
             dataSrc: 'data',
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
             dataType: 'json',
             success: function(data) {
-
                 var curso = data.data[0];
 
                 // Muestro en el recuadro los resultados para debug
@@ -81,9 +71,6 @@ $(document).ready(function() {
                 $('#id_curso').val(curso.id_curso);
                 $('#nombre').val(curso.nombre);
                 $('#descripcion').val(curso.descripcion);
-
-                $('#cursoFormContainer').toggle();
-                $('#cursoFormContainer').show();
 
             }
         })
@@ -136,7 +123,6 @@ $(document).ready(function() {
             },
             error: function(data) {
                 var jsonResult = JSON.stringify(data);
-                //localStorage.removeItem('auth_token');
                 $("#results").val("ERROR "+ jsonResult);
             }
 
@@ -153,15 +139,13 @@ $(document).ready(function() {
         console.log(jsonData);
         ajaxCallRequest(method, url, jsonData);
         $('#cursos-table').DataTable().ajax.reload();
+        $('#cursoModal').modal('toggle');
     });
 
     $("#newButton").click(function(event) {
         event.preventDefault();
         var form = $('#ajaxForm');
         form.get(0).reset();
-
-        $('#cursoFormContainer').toggle();
-        $('#cursoFormContainer').show();
     });
 
 

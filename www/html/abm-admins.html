@@ -1,27 +1,3 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" data-semver="2.1.1" data-require="jquery@*"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" data-semver="3.1.1" data-require="bootstrap@3.1.1"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mockjax/1.5.3/jquery.mockjax.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-
-    <script src="../js/script.js"></script>
-    <script src="../js/abm-admins.js"></script>
-    <script src="../js/jquery-form-serializer.js"></script>
-
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" data-semver="3.1.1" data-require="bootstrap-css@3.1.1" />
-    <link rel="stylesheet" href="../css/style.css" />
-    <link rel="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
-    <style >
-
-    </style>
-</head>
-
-<body>
-<h1>ABM de Administradores</h1>
-
 <!-- DATATABLE - LISTA ADMINS (Staff)-->
 <div id="administradores" class="container">
     <table id="datatable" class="table table-striped table-bordered display">
@@ -47,75 +23,79 @@
 <!-- BOTON NUEVO -->
 <div class="container">
     <div class="well">
-        <button type="button" class="btn btn-default" id="newButton">Nuevo</button>
+        <button type="button" class="btn btn-default" id="newButton" data-toggle='modal' data-target='#adminModal'>Nuevo</button>
     </div>
 </div>
 
 <!-- FORMULARIO DE ADMINISTRADOR -->
-<div class="container" id="staffFormContainer" style="display: none">
- <div class="well">
-        <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-admins.php">
+<div id="adminModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Contenido del modal -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <b>Editar Administrador</b> <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-admins.php">
 
-            <fieldset>
-                <input type="text" style="display:none;"  class="form-control" id="id_staff" name="id_staff" value="" />
-                <input type="hidden"  class="form-control" id="action" name="action" value="create" />
-                <div class="form-group col-xs-12 col-sm-6">
-                    <label for="nombre" class="control-label">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Enter First Name">
-                </div>
-                <div class="form-group col-xs-12 col-sm-6">
-                    <label for="apellido" class="control-lable">Apellido</label>
-                    <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Enter Last Name">
-                </div>
-
-                <div class="form-group col-xs-6 col-sm-6">
-                    <label for="tipo_doc" class="control-lable">Tipo Doc</label>
-                    <input type="text" class="form-control" name="tipo_doc" id="tipo_doc" placeholder="Tipo doc">
-                </div>
-                <div class="form-group col-xs-6 col-sm-6">
-                    <label for="tipo_doc" class="control-lable">Documento</label>
-                    <input type="text" class="form-control" name="documento" id="documento" placeholder="Documento">
-                </div>
-                <div class="form-group col-xs-12 col-sm-12">
-                    <label for="email" class="control-label">Email</label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Email">
-                </div>
-                <div class="form-group col-xs-12 col-sm-12">
-                    <label for="clave_acceso" class="control-label">Clave</label>
-                    <input type="text" class="form-control" name="clave_acceso" id="clave_acceso" placeholder="Clave">
-                </div>
-                <div class="form-group col-xs-12 col-sm-12">
-                    <label for="tipo_perfil" class="control-label">Tipo Perfil</label>
-                    <select class="form-control" name="tipo_perfil" id="tipo_perfil" >
-                        <option value="" >Seleccione un Tipo de Perfil</option>
-                        <option value="AS">Adm Sede</option>
-                        <option value="AP">Adm Pais</option>
-                        <option value="AG">Adm General</option>
-                    </select>
-                    <label for="id_sede" class="control-label">Sedes</label>
-                    <select class="form-control" name="id_sede" id="id_sede" class="browser-default custom-select">
-                    </select>
-
-                    <label for="id_pais" class="control-label">Paises</label>
-                    <select class="form-control" name="id_pais" id="id_pais" class="browser-default custom-select">
-                    </select>
-                </div>
-
-                <div class="pull-right">
-                    <br>
-                    <div class="btn-group col-xs-12">
-                        <button type="button" class="btn btn-default" id="saveButton">Grabar</button>
-                        <button class="btn btn-danger" type="reset">Limpiar</button>
+                <fieldset>
+                    <input type="text" style="display:none;"  class="form-control" id="id_staff" name="id_staff" value="" />
+                    <input type="hidden"  class="form-control" id="action" name="action" value="create" />
+                    <div class="form-group col-xs-12 col-sm-6">
+                        <label for="nombre" class="control-label">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Enter First Name">
                     </div>
-                </div>
-            </fieldset>
-        </form>
+                    <div class="form-group col-xs-12 col-sm-6">
+                        <label for="apellido" class="control-lable">Apellido</label>
+                        <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Enter Last Name">
+                    </div>
 
- </div>
+                    <div class="form-group col-xs-6 col-sm-6">
+                        <label for="tipo_doc" class="control-lable">Tipo Doc</label>
+                        <input type="text" class="form-control" name="tipo_doc" id="tipo_doc" placeholder="Tipo doc">
+                    </div>
+                    <div class="form-group col-xs-6 col-sm-6">
+                        <label for="tipo_doc" class="control-lable">Documento</label>
+                        <input type="text" class="form-control" name="documento" id="documento" placeholder="Documento">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-12">
+                        <label for="email" class="control-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-12">
+                        <label for="clave_acceso" class="control-label">Clave</label>
+                        <input type="text" class="form-control" name="clave_acceso" id="clave_acceso" placeholder="Clave">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-12">
+                        <label for="tipo_perfil" class="control-label">Tipo Perfil</label>
+                        <select class="form-control" name="tipo_perfil" id="tipo_perfil" >
+                            <option value="" >Seleccione un Tipo de Perfil</option>
+                            <option value="AS">Adm Sede</option>
+                            <option value="AP">Adm Pais</option>
+                            <option value="AG">Adm General</option>
+                        </select>
+                        <label for="id_sede" class="control-label">Sedes</label>
+                        <select class="form-control" name="id_sede" id="id_sede" class="browser-default custom-select">
+                        </select>
+
+                        <label for="id_pais" class="control-label">Paises</label>
+                        <select class="form-control" name="id_pais" id="id_pais" class="browser-default custom-select">
+                        </select>
+                    </div>
+                </fieldset>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="saveButton">Grabar</button>
+                <button class="btn btn-danger" type="reset">Limpiar</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-
 <!-- Campos de DEBUG - Para visualizar datos enviados y resultados recibidos -->
+<!--
 <div class="container">
     <div class="well col-xs-12">
         <div class="control-label col-xs-12">
@@ -134,59 +114,4 @@
     </div>
 </div>
 
-
-<!-- LOGIN FORM --------------------------------------------------------------------- -->
-<!--
-<div class="container">
-    <div class="well">
-        <form id="loginForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="http://127.0.0.1:5000/auth/login">
-            <fieldset>
-                <div class="form-group col-xs-12 col-sm-6">
-                    <label for="username" class="control-label">Usuario</label>
-                    <input type="text" class="form-control" name="username" id="username" placeholder="Ingrese nombre de usuario">
-                </div>
-                <div class="form-group col-xs-12 col-sm-6">
-                    <label for="password" class="control-lable">Password</label>
-                    <input type="text" class="form-control" name="password" id="password" placeholder="Ingrese password">
-                </div>
-                <div class="col-xs-12">
-                    <textarea class="form-control" readonly id="loginResults">Esperando respuesta</textarea>
-                </div>
-                <div class="pull-right">
-                    <br>
-                    <div class="btn-group col-xs-12">
-                        <button type="button" class="btn btn-default" id="loginButton">Login</button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
-    </div>
 -->
-    <!-- CANCELATION FORM --------------------------------------------------------------------- -->
-<!--
-    <div class="container">
-        <div class="well">
-            <form id="cancellationForm" class="form-vertical" role="form" autocomplete="off" method="PUT" action="http://127.0.0.1:5000/reserva">
-                <fieldset>
-                    <input type="hidden" name="accion" id="accion" value="CANCELAR" />
-                    <div class="form-group col-xs-12 col-sm-6">
-                        <label for="username" class="control-label">Codigo de reserva</label>
-                        <input type="text" class="form-control" name="codigo_reserva" id="codigo_reserva" placeholder="Ingrese el codigo de reserva a cancelar">
-                    </div>
-                    <div class="col-xs-12">
-                        <textarea class="form-control" readonly id="cancellationResults">Esperando respuesta de cancelación</textarea>
-                    </div>
-                    <div class="pull-right">
-                        <br>
-                        <div class="btn-group col-xs-12">
-                            <button type="button" class="btn btn-default" id="cancellationButton">Cancelar Reserva</button>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-    </div>
--->
-</body>
-
-</html>

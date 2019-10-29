@@ -1,30 +1,24 @@
 
 
 $(document).ready(function() {
-    //alert("TEST");
 
     // Armo la DATATABLE de los administradores : peticion ajax, mapeando JSON recibido y columnas
     var table = $('#paises-table').DataTable({
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
-
+        info: false,
+        retrieve: false,
+        bPaginate: false,
+        oLanguage:{
+            "sSearch": "Buscar: "
+        },
         "ajax": {
             "url":"/php/abm-paises.php", //# TODO armar url
-            /*"beforeSend": function (request) {
-                request.setRequestHeader("Authorization", "Token "+token);
-            },*/
             "type": "POST",
-            //"dataSrc": "data",
             "data": {
               'action': 'list'
             },
-            /*"success": function(d){
-              console.log(d);
-            },
-            "error": function(d){
-                console.log(d);
-            }*/
         },
 
         "columns": [
@@ -42,7 +36,7 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#paisModal'>Ver!</button>" ;
                 }
             }
 
@@ -52,7 +46,6 @@ $(document).ready(function() {
     $('#paises-table tbody').on( 'click', 'button.btn-view', function () {
         var data = table.row( $(this).parents('tr') ).data();
 
-        //alert('DEberia cargar el form con los datos');
         var datos = {
             'action' : "show",
             'id_pais' : data.id_pais
@@ -63,11 +56,6 @@ $(document).ready(function() {
             type: 'POST',
             data: datos,
             dataSrc: 'data',
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
             dataType: 'json',
             success: function(data) {
 
@@ -81,9 +69,6 @@ $(document).ready(function() {
                 $('#id_pais').val(pais.id_pais);
                 $('#nombre').val(pais.nombre);
                 $('#nombre_corto').val(pais.nombre_corto);
-
-                $('#paisFormContainer').toggle();
-                $('#paisFormContainer').show();
 
             }
         })
@@ -102,11 +87,6 @@ $(document).ready(function() {
             url: '/php/abm-sedes.php',//# TODO armar url
             type: 'POST',
             data: datos,
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
             //dataType: 'json',
             success: function(data) {
                 alert(" Eliminado sede ");
@@ -157,6 +137,7 @@ $(document).ready(function() {
         console.log(jsonData);
         ajaxCallRequest(method, url, jsonData);
         $('#paises-table').DataTable().ajax.reload();
+        $('#paisModal').modal('toggle')
     });
 
     $("#newButton").click(function(event) {
@@ -164,8 +145,6 @@ $(document).ready(function() {
         var form = $('#ajaxForm');
         form.get(0).reset();
 
-        $('#paisFormContainer').toggle();
-        $('#paisFormContainer').show();
     });
 
 
