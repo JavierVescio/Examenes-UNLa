@@ -1,44 +1,178 @@
 
+var tabla_preguntas ;
+var tabla_opciones ;
+
+// Funcion para cargar datos de la pregunta (carga opciones e imagen delegando en otras funciones)
+function loadPregunta($id_pregunta){
+    var datos = {
+        'action' : "show",
+        'id_pregunta' : $id_pregunta
+    };
+
+    $.ajax({
+        url: '/php/abm-preguntas.php',//# TODO armar url
+        type: 'POST',
+        data: datos,
+        dataSrc: 'data',
+        dataType: 'json',
+        success: function(data) {
+
+            var pregunta = data.data[0];
+
+            // Muestro en el recuadro los resultados para debug
+            var jsonResult = JSON.stringify(pregunta);
+            $("#results").val(unescape(jsonResult));
+
+            // Seteo los campos del formulario
+            $('#id_pregunta').val(pregunta.id_pregunta);
+            $('#descripcion').val(pregunta.descripcion);
+            $('#cant_opciones_validas').val(pregunta.cant_opciones_validas);
+            $('#id_curso').val(pregunta.id_curso);
+
+            // Recargo opciones de esa pregunta
+            tabla_opciones.ajax.reload();
+
+            // Cargo imagen de la pregunta
+            loadImage($id_pregunta);
+
+
+            $('#preguntaFormContainer').toggle();
+            $('#preguntaFormContainer').show();
+
+        }
+    })
+}
+
+function deletePregunta($id_pregunta){
+    var datos = {
+        'action' : "delete",
+        'id_pregunta' : $id_pregunta
+    };
+
+    $.ajax({
+        url: '/php/abm-preguntas.php',//# TODO armar url
+        type: 'POST',
+        data: datos,
+        //dataType: 'json',
+        success: function(data) {
+            alert(" Eliminado pregunta ");
+            var jsonResult = JSON.stringify(data);
+            $("#results").val(unescape(jsonResult));
+            tabla_preguntas.ajax.reload();
+        },
+        error: function(data) {
+            alert(" ERROR Eliminando pregunta ");
+            var jsonResult = JSON.stringify(data);
+            $("#results").val( "ERROR " + unescape(jsonResult));
+
+        }
+    })
+}
+
+// Funcion para cargar la imagen
+function loadImage($id_pregunta){
+
+    var datos = {
+        'action' : "show",
+        'id_pregunta' : $id_pregunta
+    };
+
+    $.ajax({
+        url: '/php/abm-preguntas-imagenes.php',//# TODO armar url
+        type: 'POST',
+        data: datos,
+        dataSrc: 'data',
+        dataType: 'json',
+        success: function(data) {
+            //alert(JSON.stringify(data));
+            var imagen = data.data[0];
+            if(imagen && imagen !="") {
+                $('#imagen').attr("src", imagen.path);
+            }else{
+                $('#imagen').attr("src", '/img/no_image.jpg');
+            }
+            $('#imagenFormContainer').toggle();
+            $('#imagenFormContainer').show();
+        }
+    })
+}
+
+// Funcion para cargar una opcion
+function loadOption($id_opcion){
+
+    var datos = {
+        'action' : "show",
+        'id_opcion' : $id_opcion
+    };
+
+    $.ajax({
+        url: '/php/abm-preguntas-opciones.php',//# TODO armar url
+        type: 'POST',
+        data: datos,
+        dataSrc: 'data',
+        dataType: 'json',
+        success: function(data) {
+
+            var opcion = data.data[0];
+
+            // Muestro en el recuadro los resultados para debug
+            var jsonResult = JSON.stringify(opcion);
+            $("#results").val(unescape(jsonResult));
+
+            // Seteo los campos del formulario
+            $('#id_opcion').val(opcion.id_opcion);
+            $('#descripcion_opcion').val(opcion.descripcion);
+            $('#es_correcta').prop('checked', getBoolean(opcion.es_correcta));
+
+            $('#opcionFormContainer').toggle();
+            $('#opcionFormContainer').show();
+
+        }
+    })
+}
+
+// Funcion para eliminar una opcion de la pregunta
+function deleteOption($id_opcion){
+    var datos = {
+        'action' : "delete",
+        'id_opcion' : $id_opcion
+    };
+
+    $.ajax({
+        url: '/php/abm-preguntas-opciones.php',//# TODO armar url
+        type: 'POST',
+        data: datos,
+        //dataType: 'json',
+        success: function(data) {
+            alert(" Eliminado opcion ");
+            var jsonResult = JSON.stringify(data);
+            $("#results").val(unescape(jsonResult));
+            tabla_opciones.ajax.reload();
+        },
+        error: function(data) {
+            alert(" ERROR Eliminando opcion ");
+            var jsonResult = JSON.stringify(data);
+            $("#results").val( "ERROR " + unescape(jsonResult));
+
+        }
+    })
+}
+
 
 $(document).ready(function() {
 
-    // TEST MULTILINEA
-    var i=1;
-    $("#add_row").click(function(){
-        b=i-1;
-        $('#addr'+i).html($('#addr'+b).html()).find('td:first-child').html(i+1);
-        $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
-        i++;
-    });
-    $("#delete_row").click(function(){
-        if(i>1){
-            $("#addr"+(i-1)).html('');
-            i--;
-        }
-    });
-    // FIN ---- TEST MULTILINEA
-
     // Armo la DATATABLE de las preguntas : peticion ajax, mapeando JSON recibido y columnas
-    var table = $('#preguntas-table').DataTable({
+    tabla_preguntas = $('#preguntas-table').DataTable({
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
         "ajax": {
             "url":"/php/abm-preguntas.php", //# TODO armar url
-            /*"beforeSend": function (request) {
-                request.setRequestHeader("Authorization", "Token "+token);
-            },*/
             "type": "POST",
             //"dataSrc": "data",
             "data": {
               'action': 'list'
             },
-            /*"success": function(d){
-              console.log(d);
-            },
-            "error": function(d){
-                console.log(d);
-            }*/
         },
 
         "columns": [
@@ -65,86 +199,22 @@ $(document).ready(function() {
     });
 
     $('#preguntas-table tbody').on( 'click', 'button.btn-view', function () {
-        var data = table.row( $(this).parents('tr') ).data();
+        var data = tabla_preguntas.row( $(this).parents('tr') ).data();
 
-        var datos = {
-            'action' : "show",
-            'id_pregunta' : data.id_pregunta
-        };
-
-        $.ajax({
-            url: '/php/abm-preguntas.php',//# TODO armar url
-            type: 'POST',
-            data: datos,
-            dataSrc: 'data',
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
-            dataType: 'json',
-            success: function(data) {
-
-                var pregunta = data.data[0];
-
-                // Muestro en el recuadro los resultados para debug
-                var jsonResult = JSON.stringify(pregunta);
-                $("#results").val(unescape(jsonResult));
-
-                // Seteo los campos del formulario
-                $('#id_pregunta').val(pregunta.id_pregunta);
-                $('#descripcion').val(pregunta.descripcion);
-                $('#cant_opciones_validas').val(pregunta.cant_opciones_validas);
-                $('#id_curso').val(pregunta.id_curso);
-
-                $('#opciones-table').DataTable().ajax.reload();
-                //$('#opciones-table').DataTable().ajax.url('/php/abm-preguntas-opciones.php').load();
-
-                $('#preguntaFormContainer').toggle();
-                $('#preguntaFormContainer').show();
-
-            }
-        })
+        // Cargo datos de la pregunta
+        loadPregunta(data.id_pregunta);
     } )
 
     // Evento eliminar asociado a cada ROW de la tabla de PREGUNTAS
     $('#preguntas-table tbody').on( 'click', 'button.btn-cancel', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-
-        var datos = {
-            'action' : "delete",
-            'id_pregunta' : data.id_pregunta
-        };
-
-        $.ajax({
-            url: '/php/abm-preguntas.php',//# TODO armar url
-            type: 'POST',
-            data: datos,
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
-            //dataType: 'json',
-            success: function(data) {
-                alert(" Eliminado pregunta ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
-                $('#preguntas-table').DataTable().ajax.reload();
-            },
-            error: function(data) {
-                alert(" ERROR Eliminando pregunta ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val( "ERROR " + unescape(jsonResult));
-
-            }
-        })
+        var data = tabla_preguntas.row( $(this).parents('tr') ).data();
+        deletePregunta(data.id_pregunta);
 
     } )
 
 
     // TABLA DE OPCIONES
-    var tabla_opciones = $('#opciones-table').DataTable({
+    tabla_opciones = $('#opciones-table').DataTable({
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
@@ -161,13 +231,6 @@ $(document).ready(function() {
                     'id_pregunta': $('#id_pregunta').val()
                 });
             },
-            /*
-            "success": function(d){
-              console.log(d);
-            },
-            "error": function(d){
-                console.log(d);
-            }*/
         },
 
         "columns": [
@@ -195,66 +258,15 @@ $(document).ready(function() {
     // EDITAR/VER DATOS DE OPCION
     $('#opciones-table tbody').on( 'click', 'button.btn-view', function () {
         var data = tabla_opciones.row( $(this).parents('tr') ).data();
-
-        var datos = {
-            'action' : "show",
-            'id_opcion' : data.id_opcion
-        };
-
-        $.ajax({
-            url: '/php/abm-preguntas-opciones.php',//# TODO armar url
-            type: 'POST',
-            data: datos,
-            dataSrc: 'data',
-            dataType: 'json',
-            success: function(data) {
-
-                var opcion = data.data[0];
-
-                // Muestro en el recuadro los resultados para debug
-                var jsonResult = JSON.stringify(opcion);
-                $("#results").val(unescape(jsonResult));
-
-                // Seteo los campos del formulario
-                $('#id_opcion').val(opcion.id_opcion);
-                $('#descripcion_opcion').val(opcion.descripcion);
-                $('#es_correcta').prop('checked', getBoolean(opcion.es_correcta));
-
-                $('#opcionFormContainer').toggle();
-                $('#opcionFormContainer').show();
-
-            }
-        })
+        loadOption(data.id_opcion);
 
     } )
 
     // ELIMINAR OPCIONES DE PREGUNTA
     $('#opciones-table tbody').on( 'click', 'button.btn-cancel', function () {
         var data = tabla_opciones.row( $(this).parents('tr') ).data();
+        deleteOption(data.id_opcion);
 
-        var datos = {
-            'action' : "delete",
-            'id_opcion' : data.id_opcion
-        };
-
-        $.ajax({
-            url: '/php/abm-preguntas-opciones.php',//# TODO armar url
-            type: 'POST',
-            data: datos,
-            //dataType: 'json',
-            success: function(data) {
-                alert(" Eliminado opcion ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
-                tabla_opciones.ajax.reload();
-            },
-            error: function(data) {
-                alert(" ERROR Eliminando opcion ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val( "ERROR " + unescape(jsonResult));
-
-            }
-        })
 
     } );
 
@@ -281,19 +293,20 @@ $(document).ready(function() {
     }
 
 
-    function ajaxSaveOptionRequest(f_method, f_url, f_data) {
-        var f_contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+    function ajaxSaveImageRequest(f_method, f_url, f_data) {
+        var f_contentType = 'multipart/form-data';
 
         $.ajax({
             url: f_url,
             type: f_method,
-            contentType: f_contentType,
-            dataType: 'json',
+            //contentType: f_contentType,
+            contentType: false,
+            processData: false,
             data: f_data,
             success: function(data) {
                 var jsonResult = JSON.stringify(data);
                 $("#results").val(unescape(jsonResult));
-
+                loadImage($('#id_pregunta').val());
             },
             error: function(data) {
                 var jsonResult = JSON.stringify(data);
@@ -342,8 +355,30 @@ $(document).ready(function() {
         jsonData['es_correcta'] = Number($('#es_correcta').is(":checked"));
 
         console.log(jsonData);
-        ajaxSaveOptionRequest(method, url, jsonData);
+        ajaxCallRequest(method, url, jsonData);
         $('#opciones-table').DataTable().ajax.reload();
+    });
+
+    // Evento del boton de GRABAR IMAGEN
+    $("#saveButton_imagen").click(function(event) {
+        event.preventDefault();
+        var form = $('#imagenForm');
+        var method = form.attr('method');
+        var url = form.attr('action') ;
+
+        var jsonData = $(form).serializeObject();
+
+        var fd = new FormData();
+        var files = $('#nueva_imagen')[0].files[0];
+
+        fd.append('action',jsonData['action_imagen']);
+        fd.append('id_pregunta',$('#id_pregunta').val());
+        fd.append('nueva_imagen',files);
+
+        //var jsonData = $(form).serializeObject();
+        //console.log(jsonData);
+        ajaxSaveImageRequest(method, url, fd);
+
     });
 
     // Evento de NUEUVA OPCION

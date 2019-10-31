@@ -194,4 +194,29 @@ class RepositorioPreguntaImagen
 
     }
 
+    public static function deleteByPregunta($conexion, $id_pregunta) {
+        $result = true ;
+        if (isset($conexion)) {
+            try {
+                $sql = "DELETE FROM `royal_academy`.`preguntas_imagenes` WHERE `id_pregunta` = :id_pregunta ;";
+
+                if(!is_null($id_pregunta)) {
+                    $sentencia = $conexion->prepare($sql);
+                    $sentencia->bindParam(':id_pregunta',$id_pregunta,PDO::PARAM_INT);
+
+                }else {
+                    throw new Exception("No se define id_pregunta para eliminar imagenes asociadas");
+                }
+                $sentencia->execute();
+
+                $result = true ;
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $result = false;
+            }
+        }
+
+        return $result;
+    }
+
 }
