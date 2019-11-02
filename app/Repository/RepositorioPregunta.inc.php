@@ -150,5 +150,45 @@ class RepositorioPregunta
         return $result;
     }
 
+    public static function getOpcionesByPregunta($conexion, $id_pregunta){
+        $list = array();
+        if (isset($conexion)) {
+            try {
+                $sql = "SELECT p.id_pregunta,
+                               po.id_opcion,
+                               po.descripcion,
+                               po.es_correcta
+                        FROM `preguntas` p
+                        LEFT JOIN `preguntas_opciones` po on po.id_pregunta = p.id_pregunta
+                        WHERE p.id_pregunta = :id_pregunta;
+                ";
+
+                if(!is_null($id_pregunta)) {
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bindParam(':id_pregunta', $id_pregunta, PDO::PARAM_INT);
+                }else {
+                    throw new Exception("Debe definicar id_examen para recuperar las preguntas");
+
+                }
+                $stmt->execute();
+                $result = $stmt->fetchAll();
+
+                if (!empty($result)) {
+                    foreach ($result as $data){
+                        $result = Pregunta::buildFromArray($data);
+                        $list[] = $data;
+                    }
+                }
+
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $list = null;
+
+            }
+        }
+        return $list;
+
+    }
+
 
 }

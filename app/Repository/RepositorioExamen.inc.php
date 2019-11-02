@@ -6,9 +6,9 @@ require_once APP_PATH . '/Entity/Examen.inc.php';
 class RepositorioExamen{
 
     /**
-     * @return Alumno[]
+     * @return Examen[]
      */
-    public static function findById($conexion, $id_examen = null)  {
+    public static function findById($conexion, $id_examen = null, $con_preguntas = false)  {
         $list = array();
         if (isset($conexion)) {
             try {
@@ -29,13 +29,12 @@ class RepositorioExamen{
                 }else {
                     $stmt = $conexion->prepare($sql);
                 }
-
                 $stmt->execute();
                 $result = $stmt->fetchAll();
 
                 if (!empty($result)) {
                     foreach ($result as $data){
-                        //$result = Examen::buildFromArray($data);
+                        //$list[] = Examen::buildFromArray($data);
                         $list[] = $data;
                     }
                 }
@@ -150,5 +149,48 @@ class RepositorioExamen{
             }
         }
         return $result;
+    }
+
+    public static function getPreguntasByExamen($conexion, $id_examen){
+        $list = array();
+        if (isset($conexion)) {
+            try {
+                $sql = "SELECT ep.`id_examenes_preguntas`,
+                           ep.`id_examen`,
+                           p.id_pregunta,
+                           p.descripcion,
+                           p.id_curso,
+                           p.cant_opciones_validas
+                    FROM `examenes_preguntas` ep
+                    LEFT JOIN `preguntas` p on ep.id_pregunta = p.id_pregunta
+				
+                    WHERE `id_examen` = :id_examen;
+                ";
+
+                if(!is_null($id_examen)) {
+                    $stmt = $conexion->prepare($sql);
+                    $stmt->bindParam(':id_examen', $id_examen, PDO::PARAM_INT);
+                }else {
+                    throw new Exception("Debe definicar id_examen para recuperar las preguntas");
+
+                }
+                $stmt->execute();
+                $result = $stmt->fetchAll();
+
+                if (!empty($result)) {
+                    foreach ($result as $data){
+                        $result = Pregunta::buildFromArray($data);
+                        $list[] = $data;
+                    }
+                }
+
+            } catch (PDOException $ex) {
+                print "ERROR" . $ex->getMessage();
+                $list = null;
+
+            }
+        }
+        return $list;
+
     }
 }
