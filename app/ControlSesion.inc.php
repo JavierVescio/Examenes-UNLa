@@ -9,7 +9,7 @@ class ControlSesion {
 
         $_SESSION['id_alumno'] = $id_alumno;
         $_SESSION['nombre_alumno'] = $nombre_alumno;
-        $_SESSION['email_alumno'] = $nombre_alumno;
+        $_SESSION['email_alumno'] = $email_alumno;
     }
 
     public static function iniciar_sesion_staff($id_staff, $nombre_staff, $email_staff) {
@@ -79,6 +79,18 @@ class ControlSesion {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    public static function obtener_id_staff(){
+        if (session_id() == '') {
+            session_start();
+        }
+        
+        if (isset($_SESSION['id_staff'])){
+            return $_SESSION['id_staff'];
+        }else {
+            return -1;
         }
     }
 

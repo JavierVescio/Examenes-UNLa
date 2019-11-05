@@ -80,6 +80,18 @@ if (ControlSesion::sesion_iniciada_staff()) {
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Exámenes
+                        </div>
+                        <div class="panel-body">
+                            <p>Gestionar los exámenes.</p>
+                            <a class="btn btn-default form-control" href="/?panel=abm_examenes"
+                               role="button">Gestionar</a>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -99,5 +111,4 @@ if (ControlSesion::sesion_iniciada_staff()) {
 
 <?php
 include_once WWW_PATH . '/plantillas/documento-cierre.inc.php';
-?>
 

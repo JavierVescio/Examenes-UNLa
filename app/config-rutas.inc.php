@@ -5,6 +5,7 @@ define('RUTA_ABM_ADMINS',"/html/abm-admins.html");
 define('RUTA_ABM_CURSOS',"/html/abm-cursos.html");
 define('RUTA_ABM_PAISES',"/html/abm-paises.html");
 define('RUTA_ABM_SEDES',"/html/abm-sedes.html");
+define('RUTA_ABM_EXAMENES',"/html/abm-examenes.html");
 define('RUTA_ABM_OPCIONES',"/html/abm-preguntas.html");
 
 
@@ -45,6 +46,20 @@ $paneles = array(
                     'jquery.dataTables.min.js',
                     'jquery-form-serializer.js',
                     'abm-paises.js'
+                ),
+            'css'  =>
+                array(
+                    'jquery.dataTables.min.css',
+                )
+        ),
+     'abm_examenes' =>
+        array(
+            'home' => RUTA_ABM_EXAMENES,
+            'js'   =>
+                array(
+                    'jquery.dataTables.min.js',
+                    'jquery-form-serializer.js',
+                    'abm-examenes.js'
                 ),
             'css'  =>
                 array(

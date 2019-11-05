@@ -3,7 +3,7 @@
 $(document).ready(function() {
     //alert("TEST");
 
-    // Armo la DATATABLE de los administradores : peticion ajax, mapeando JSON recibido y columnas
+    // Armo la DATATABLE de los cursos : peticion ajax, mapeando JSON recibido y columnas
     var table = $('#cursos-table').DataTable({
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
