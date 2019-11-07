@@ -21,136 +21,166 @@
 <!-- BOTON NUEVA PREGUNTA -->
 <div class="container">
     <div class="well">
-        <button type="button" class="btn btn-default" id="newButton">Nueva Pregunta</button>
+        <button type="button" class="btn btn-default" id="newButton" data-toggle='modal' data-target='#preguntaModal'>Nueva Pregunta</button>
     </div>
 </div>
 
 <!-- FORMULARIO DE PREGUNTA -->
-<div class="container" id="preguntaFormContainer" style="display: none">
-     <div class="well" >
-        <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-preguntas.php">
+<div id="preguntaModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Contenido del modal -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <b>Editar Pregunta</b> <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!--<div class="container" id="preguntaFormContainer" style="display: none">
+                     <div class="well" > -->
+                        <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-preguntas.php">
 
-            <fieldset>
-                <input type="text" style="display:none;"  class="form-control" id="id_pregunta" name="id_pregunta" value="" />
-                <input type="hidden"  class="form-control" id="action" name="action" value="create" />
+                            <fieldset>
+                                <input type="text" style="display:none;"  class="form-control" id="id_pregunta" name="id_pregunta" value="" />
+                                <input type="hidden"  class="form-control" id="action" name="action" value="create" />
 
-                <div class="form-group col-xs-12 col-sm-6">
-                    <label for="id_curso" class="control-label">Curso</label>
-                    <select class="form-control" name="id_curso" id="id_curso" class="browser-default custom-select">
-                    </select>
-                </div>
-                <div class="form-group col-xs-12 col-sm-6">
-                    <label for="descripcion" class="control-label">Descripcion</label>
-                    <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Ingrese pregunta">
-                </div>
-                <div class="form-group col-xs-12 col-sm-6" id="div_tipo_pregunta">
-                    <label for="tipo_pregunta" class="control-lable">Tipo Pregunta</label>
-                    <select class="form-control" name="tipo_pregunta" id="tipo_pregunta" >
-                        <option value="">Seleccione tipo de pregunta</option>
-                        <option value="MC">Multiple Choice</option>
-                        <option value="VF">VERDADERO / FALSO </option>
-                    </select>
-                </div>
-                <div class="form-group col-xs-12 col-sm-6" id="div_vf_rta_valida" style="display: none">
-                    <label for="vf_rta_valida" class="control-lable">Respuesta valida</label>
-                    <select class="form-control" name="vf_rta_valida" id="vf_rta_valida" >
-                        <option value="V">VERDADERO</option>
-                        <option value="F">FALSO</option>
-                    </select>
-                </div>
-                <div class="form-group col-xs-12 col-sm-6" id="div_cant_opciones_validas" style="display: none">
-                    <label for="cant_opciones_validas" class="control-lable">Cant. opciones validas</label>
-                    <input type="number" class="form-control" name="cant_opciones_validas" id="cant_opciones_validas" >
-                </div>
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="id_curso" class="control-label">Curso</label>
+                                    <select class="form-control" name="id_curso" id="id_curso" class="browser-default custom-select">
+                                    </select>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="descripcion" class="control-label">Descripcion</label>
+                                    <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Ingrese pregunta">
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6" id="div_tipo_pregunta">
+                                    <label for="tipo_pregunta" class="control-lable">Tipo Pregunta</label>
+                                    <select class="form-control" name="tipo_pregunta" id="tipo_pregunta" >
+                                        <option value="">Seleccione tipo de pregunta</option>
+                                        <option value="MC">Multiple Choice</option>
+                                        <option value="VF">VERDADERO / FALSO </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6" id="div_vf_rta_valida" style="display: none">
+                                    <label for="vf_rta_valida" class="control-lable">Respuesta valida</label>
+                                    <select class="form-control" name="vf_rta_valida" id="vf_rta_valida" >
+                                        <option value="V">VERDADERO</option>
+                                        <option value="F">FALSO</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6" id="div_cant_opciones_validas" style="display: none">
+                                    <label for="cant_opciones_validas" class="control-lable">Cant. opciones validas</label>
+                                    <input type="number" class="form-control" name="cant_opciones_validas" id="cant_opciones_validas" >
+                                </div>
 
-                <div class="btn-group col-xs-12 col-sm-12">
-                    <div class="pull-right col-xs-6 col-sm-6">
-                        <button type="button" class="btn btn-default" id="saveButton">Grabar</button>
-                        <button class="btn btn-danger" type="reset">Limpiar</button>
+                                <div class="btn-group col-xs-12 col-sm-12">
+                                    <div class="pull-right col-xs-6 col-sm-6">
+                                        <button type="button" class="btn btn-danger" id="saveButton">Grabar</button>
+                                        <button class="btn" type="reset">Limpiar</button>
+                                        <button type="button" class="btn btn-warning" id="modalImagenButton" data-toggle='modal' data-target='#imagenModal' data-dismiss="preguntaModal">Imagen</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                     <!--</div>
+                </div> -->
+                <div id="extrasPreguntaContainer" style="display: none; margin-top: 25px" >
+                     <!-- CONTENEDOR DE DATATABLE DE OPCIONES-->
+                     <div id="div_opciones-table" >
+                        <!-- <div class="well" > -->
+                             <table id="opciones-table" class="table table-striped table-bordered display">
+                                 <thead>
+                                 <tr>
+                                     <th>ID</th>
+                                     <th>Descripcion</th>
+                                     <th>Es valida</th>
+                                     <th>Anular</th>
+                                 </tr>
+                                 </thead>
+
+                                 <tbody id="opciones-table-body">
+                                 </tbody>
+                             </table>
+                        <!-- </div> -->
+                        <!-- BOTON NUEVA OPCION -->
+                        <!-- <div class="well"> -->
+                            <button type="button" class="btn btn-default" id="newButton_opcion">Nueva Opcion</button>
+                        <!-- </div> -->
                     </div>
-                </div>
-            </fieldset>
-        </form>
 
-     </div>
+                    <!-- FORMULARIO DE OPCION -->
+                    <div  id="opcionFormContainer" style="display: none; margin-top: 25px">
+                        <!-- <div class="well"> -->
+                            <form id="opcionForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-preguntas-opciones.php">
+
+                                <fieldset>
+                                    <input type="text" style="display:none;"  class="form-control" id="id_opcion" name="id_opcion" value="" />
+                                    <input type="hidden"  class="form-control" id="action_opcion" name="action_opcion" value="create" />
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label for="descripcion" class="control-label">Descripcion</label>
+                                        <input type="text" class="form-control" name="descripcion_opcion" id="descripcion_opcion" placeholder="Ingrese opcion">
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label for="es_correcta" class="control-lable">Es opcion valida</label>
+                                        <input type="checkbox" class="form-control" name="es_correcta" id="es_correcta" >
+                                    </div>
+
+                                    <div class="btn-group col-xs-12 col-sm-12">
+                                        <div class="pull-right col-xs-6 col-sm-6">
+                                            <button type="button" class="btn btn-danger" id="saveButton_opcion">Grabar</button>
+                                            <button class="btn " type="reset">Limpiar</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+
+                        <!-- </div> -->
+                    </div>
+                    <!-- IAMGEN -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="container" id="extrasPreguntaContainer" style="display: none">
-     <!-- CONTENEDOR DE DATATABLE DE OPCIONES-->
-     <div class="container" id="div_opciones-table" >
-        <div class="well" >
-             <table id="opciones-table" class="table table-striped table-bordered display">
-                 <thead>
-                 <tr>
-                     <th>ID</th>
-                     <th>Descripcion</th>
-                     <th>Es valida</th>
-                     <th>Anular</th>
-                 </tr>
-                 </thead>
+<div id="imagenModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Contenido del modal -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <b>Editar Imagen</b> <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div  id="imagenFormContainer" >
+                    <!-- <div class="well"> -->
+                    <form id="imagenForm" class="form-vertical" role="form" autocomplete="off" enctype="multipart/form-data" method="POST" action="/php/abm-preguntas-imagenes.php">
+                        <fieldset>
+                            <input type="hidden"  class="form-control" id="action_imagen" name="action_imagen" value="create" />
+                            <div class="form-group col-xs-12 col-sm-6">
+                                <label for="nueva_imagen" class="control-label">Cargar/Reemplazar Imagen</label>
+                                <input type="file" class="form-control" name="nueva_imagen" id="nueva_imagen" class="browser-default custom-select" />
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-12">
+                                <img src="/img/no_image.jpg" id="imagen" name="imagen" width="350px" height="350px" class="center-block"/>
+                            </div>
+                            <div class="btn-group col-xs-12 col-sm-12">
+                                <div class="pull-right col-xs-6 col-sm-6">
+                                    <button type="button" class="btn btn-danger" id="saveButton_imagen">Grabar</button>
+                                    <button class="btn" type="reset">Limpiar</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
 
-                 <tbody id="opciones-table-body">
-                 </tbody>
-             </table>
-        </div>
-        <!-- BOTON NUEVA OPCION -->
-        <div class="well">
-            <button type="button" class="btn btn-default" id="newButton_opcion">Nueva Opcion</button>
-        </div>
-    </div>
-
-    <!-- FORMULARIO DE OPCION -->
-    <div class="container" id="opcionFormContainer" style="display: none">
-        <div class="well">
-            <form id="opcionForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/php/abm-preguntas-opciones.php">
-
-                <fieldset>
-                    <input type="text" style="display:none;"  class="form-control" id="id_opcion" name="id_opcion" value="" />
-                    <input type="hidden"  class="form-control" id="action_opcion" name="action_opcion" value="create" />
-                    <div class="form-group col-xs-12 col-sm-6">
-                        <label for="descripcion" class="control-label">Descripcion</label>
-                        <input type="text" class="form-control" name="descripcion_opcion" id="descripcion_opcion" placeholder="Ingrese opcion">
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-6">
-                        <label for="es_correcta" class="control-lable">Es opcion valida</label>
-                        <input type="checkbox" class="form-control" name="es_correcta" id="es_correcta" >
-                    </div>
-
-                    <div class="btn-group col-xs-12 col-sm-12">
-                        <div class="pull-right col-xs-6 col-sm-6">
-                            <button type="button" class="btn btn-default" id="saveButton_opcion">Grabar</button>
-                            <button class="btn btn-danger" type="reset">Limpiar</button>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
-
-    <div class="container" id="imagenFormContainer" >
-        <div class="well">
-            <form id="imagenForm" class="form-vertical" role="form" autocomplete="off" enctype="multipart/form-data" method="POST" action="/php/abm-preguntas-imagenes.php">
-                <fieldset>
-                    <input type="hidden"  class="form-control" id="action_imagen" name="action_imagen" value="create" />
-                    <div class="form-group col-xs-12 col-sm-6">
-                        <label for="nueva_imagen" class="control-label">Cargar/Reemplazar Imagen</label>
-                        <input type="file" class="form-control" name="nueva_imagen" id="nueva_imagen" class="browser-default custom-select" />
-                    </div>
-                    <div class="form-group col-xs-12 col-sm-12">
-                        <img src="/img/no_image.jpg" id="imagen" name="imagen" width="350px" height="350px" class="center-block"/>
-                    </div>
-                    <div class="btn-group col-xs-12 col-sm-12">
-                        <div class="pull-right col-xs-6 col-sm-6">
-                            <button type="button" class="btn btn-default" id="saveButton_imagen">Grabar</button>
-                            <button class="btn btn-danger" type="reset">Limpiar</button>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-
-        </div>
-    </div>
-
 </div>
 
 
@@ -174,40 +204,3 @@
         </div>
     </div>
 </div>
-
-
-<!-- FORMULARIO DE OPCIONES DE PREGUNTAS-->
-<!--
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <table class="table table-bordered table-hover" id="tab_logic">
-                <thead>
-                <tr>
-                    <th class="text-center"> # </th>
-                    <th class="text-center"> Name </th>
-                    <th class="text-center"> Mail </th>
-                    <th class="text-center"> Mobile </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr id="addr0">
-                    <td>1</td>
-                    <td>
-                        <input type="text" name="name[]" placeholder="Enter Full Name" class="form-control">
-                    </td>
-                    <td>
-                        <input type="email" name="mail[]" placeholder="Enter Mail" class="form-control">
-                    </td>
-                    <td>
-                        <input type="number" name="mobile[]" placeholder="Enter Mobile" class="form-control">
-                    </td>
-                </tr>
-                <tr id="addr1"></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <button id="add_row" class="btn btn-default pull-left">Add Row</button><button id='delete_row' class="pull-right btn btn-default">Delete Row</button>
-</div>
--->

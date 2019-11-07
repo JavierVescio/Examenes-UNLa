@@ -196,7 +196,7 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#preguntaModal'>Ver!</button>" ;
                 }
             }
 
@@ -400,6 +400,7 @@ $(document).ready(function() {
         //    ajaxCallRequest(method, url, jsonData);
         //}
 
+        $('#modalImagenButton').show();
         $('#extrasPreguntaContainer').show();
         $('#preguntas-table').DataTable().ajax.reload();
     });
@@ -415,6 +416,7 @@ $(document).ready(function() {
         $('#div_vf_rta_valida').hide();
         $('#div_cant_opciones_validas').hide();
 
+        $('#modalImagenButton').hide();
         $('#extrasPreguntaContainer').hide();
         $('#opciones-table').DataTable().clear().draw();
 
@@ -485,7 +487,7 @@ $(document).ready(function() {
         var url = form.attr('action');
         var jsonData = $(form).serializeObject();
 
-        alert($('#id_pregunta').val());
+        //alert($('#id_pregunta').val());
         jsonData['action'] = 'create';
         jsonData['id_pregunta'] = Number($('#id_pregunta').val());
 
