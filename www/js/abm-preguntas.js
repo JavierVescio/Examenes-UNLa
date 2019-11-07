@@ -39,6 +39,11 @@ function loadPregunta($id_pregunta){
             $('#preguntaFormContainer').toggle();
             $('#preguntaFormContainer').show();
 
+            $('#div_opciones-table').show();
+
+            $('#extrasPreguntaContainer').toggle();
+            $('#extrasPreguntaContainer').show();
+
         }
     })
 }
@@ -201,6 +206,12 @@ $(document).ready(function() {
     $('#preguntas-table tbody').on( 'click', 'button.btn-view', function () {
         var data = tabla_preguntas.row( $(this).parents('tr') ).data();
 
+        $('#div_tipo_pregunta').hide();
+        $('#div_vf_rta_valida').hide();
+        $('#div_cant_opciones_validas').show();
+        //$('#div_opciones-table').show();
+
+
         // Cargo datos de la pregunta
         loadPregunta(data.id_pregunta);
     } )
@@ -271,7 +282,7 @@ $(document).ready(function() {
     } );
 
 
-    function ajaxCallRequest(f_method, f_url, f_data) {
+    function ajaxSaveOptionCallRequest(f_method, f_url, f_data) {
         var f_contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
         $.ajax({
             url: f_url,
@@ -282,11 +293,44 @@ $(document).ready(function() {
             success: function(data) {
                 var jsonResult = JSON.stringify(data);
                 $("#results").val(unescape(jsonResult));
+                //alert('Pregunta creada correctamente');
 
             },
             error: function(data) {
                 var jsonResult = JSON.stringify(data);
                 $("#results").val("ERROR "+ jsonResult);
+                //alert('Error al crear pregunta');
+            }
+
+        });
+    }
+
+    function ajaxSaveQuestionCallRequest(f_method, f_url, f_data) {
+        var f_contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+        $.ajax({
+            url: f_url,
+            type: f_method,
+            contentType: f_contentType,
+            dataType: 'json',
+            data: f_data,
+            success: function(data) {
+
+                if(data.id_pregunta){
+                    $("#id_pregunta").val(data.id_pregunta);
+                }
+
+                if(f_data['tipo_pregunta'] == "VF")
+                        simularInsertTrueFalse();
+
+                var jsonResult = JSON.stringify(data);
+                $("#results").val(unescape(jsonResult));
+                alert('Pregunta creada correctamente');
+
+            },
+            error: function(data) {
+                var jsonResult = JSON.stringify(data);
+                $("#results").val("ERROR "+ jsonResult);
+                alert('Error al crear pregunta');
             }
 
         });
@@ -316,15 +360,47 @@ $(document).ready(function() {
         });
     }
 
+    $('#tipo_pregunta').on('change', function() {
+        tipo_pregunta = $("#tipo_pregunta option:selected" ).val();
+        //alert(tipo_pregunta);
+        if(tipo_pregunta == "MC"){
+            $('#div_vf_rta_valida').hide();
+            $('#div_cant_opciones_validas').show();
+            $('#opciones-table').DataTable().clear().draw();
+            $('#div_opciones-table').show();
+        }else if(tipo_pregunta == "VF"){
+            $('#div_cant_opciones_validas').hide();
+            $('#div_opciones-table').hide();
+            $('#div_vf_rta_valida').show();
+
+
+        }
+    })
+
     // Evento del boton de GRABAR PREGUNTAS
     $("#saveButton").click(function(event) {
         event.preventDefault();
         var form = $('#ajaxForm');
         var method = form.attr('method');
         var url = form.attr('action') ;
+
+        tipo_pregunta = $("#tipo_pregunta option:selected" ).val();
+        if(tipo_pregunta == "VF"){
+            $('input[name="cant_opciones_validas"]').val("1");
+        }
+
         var jsonData = $(form).serializeObject();
         console.log(jsonData);
-        ajaxCallRequest(method, url, jsonData);
+        //ajaxSaveQuestionCallRequest(method, url, jsonData);
+
+        // GRABO OPCIONES VERDADERO/FALSE
+        //if(tipo_pregunta == "VF") {
+            ajaxSaveQuestionCallRequest(method, url, jsonData);
+        //}else{
+        //    ajaxCallRequest(method, url, jsonData);
+        //}
+
+        $('#extrasPreguntaContainer').show();
         $('#preguntas-table').DataTable().ajax.reload();
     });
 
@@ -333,6 +409,16 @@ $(document).ready(function() {
         event.preventDefault();
         var form = $('#ajaxForm');
         form.get(0).reset();
+
+
+        $('#div_tipo_pregunta').show();
+        $('#div_vf_rta_valida').hide();
+        $('#div_cant_opciones_validas').hide();
+
+        $('#extrasPreguntaContainer').hide();
+        $('#opciones-table').DataTable().clear().draw();
+
+        //$('#div_opciones-table').hide();
 
         $('#preguntaFormContainer').toggle();
         $('#preguntaFormContainer').show();
@@ -355,8 +441,10 @@ $(document).ready(function() {
         jsonData['es_correcta'] = Number($('#es_correcta').is(":checked"));
 
         console.log(jsonData);
-        ajaxCallRequest(method, url, jsonData);
+        ajaxSaveOptionCallRequest(method, url, jsonData);
+
         $('#opciones-table').DataTable().ajax.reload();
+        $('#opcionFormContainer').hide();
     });
 
     // Evento del boton de GRABAR IMAGEN
@@ -390,6 +478,30 @@ $(document).ready(function() {
         $('#opcionFormContainer').toggle();
         $('#opcionFormContainer').show();
     });
+
+    function simularInsertTrueFalse() {
+        var form = $('#opcionForm');
+        var method = form.attr('method');
+        var url = form.attr('action');
+        var jsonData = $(form).serializeObject();
+
+        alert($('#id_pregunta').val());
+        jsonData['action'] = 'create';
+        jsonData['id_pregunta'] = Number($('#id_pregunta').val());
+
+        jsonData['descripcion'] = 'VERDADERO';
+        jsonData['es_correcta'] = Number($('#vf_rta_valida').val() == "V");
+
+        console.log(jsonData);
+        ajaxSaveOptionCallRequest(method, url, jsonData);
+
+        jsonData['descripcion'] = 'FALSO';
+        jsonData['es_correcta'] = Number($('#vf_rta_valida').val() == "F");
+
+        console.log(jsonData);
+        ajaxSaveOptionCallRequest(method, url, jsonData);
+
+    }
 
 });
 
@@ -430,4 +542,3 @@ function getBoolean(value){
             return false;
     }
 }
-

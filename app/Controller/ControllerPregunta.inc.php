@@ -23,9 +23,10 @@ class ControllerPregunta extends GenericController
         if($status){
             $response['status'] = 'success';
             $response['message'] = 'Pregunta creada correctamente';
+            $response['id_pregunta'] = $status;
         }else{
             $response['status'] = 'failed';
-            $response['message'] = 'Pregunta creada correctamente';
+            $response['message'] = 'Error al crear pregunta';
         }
         return json_encode($response);
     }

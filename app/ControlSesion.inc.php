@@ -94,4 +94,16 @@ class ControlSesion {
         }
     }
 
+    public static function obtener_id_alumno(){
+        if (session_id() == '') {
+            session_start();
+        }
+
+        if (isset($_SESSION['id_alumno'])){
+            return $_SESSION['id_alumno'];
+        }else {
+            return -1;
+        }
+    }
+
 }

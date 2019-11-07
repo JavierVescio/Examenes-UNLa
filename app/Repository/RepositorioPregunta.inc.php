@@ -92,7 +92,7 @@ class RepositorioPregunta
 
                 $sentencia->execute();
 
-                $result = true ;
+                $result = $conexion->lastInsertId();
             } catch (PDOException $ex) {
                 print "ERROR" . $ex->getMessage();
                 $result = false;
@@ -122,7 +122,7 @@ class RepositorioPregunta
 
                 $sentencia->execute();
 
-                $result = true ;
+                $result = $pregunta->getIdPregunta() ;
             } catch (PDOException $ex) {
                 print "ERROR" . $ex->getMessage();
                 $result = false;
