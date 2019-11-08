@@ -101,6 +101,28 @@ if (ControlSesion::sesion_iniciada_staff()) {
         $panel = $_GET['panel'];
         include_once WWW_PATH . $paneles[$panel]['home'];
     }
+}else if(ControlSesion::sesion_iniciada_alumno()){
+    require_once APP_PATH . '/Repository/RepositorioExamen.inc.php';
+    require_once APP_PATH . '/Repository/RepositorioCurso.inc.php';
+    require_once APP_PATH . '/Entity/Examen.inc.php';
+    require_once APP_PATH . '/Entity/Curso.inc.php';
+
+    $arr_examenes = RepositorioExamen::listAll(Conexion::getConexion());
+    echo "<div class='container'>";
+    foreach ($arr_examenes as $arr_examen) {
+        $examen = Examen::buildFromArray($arr_examen);
+        $arr_curso = RepositorioCurso::findById(Conexion::getConexion(),$examen->getIdCurso());
+        $curso = Curso::buildFromArray($arr_curso[0]);
+
+
+        echo "Examen del curso ". $curso->getNombre(). " - Fecha creación : ". $examen->getFechaCreacion() . " ";
+        echo "<a href='http://royal-academy.local:81/php/mostrar_examen.php?id_examen=".$examen->getIdExamen()."' > ( Rendir )</a>";
+        echo "<br>";
+
+
+    }
+    echo "</div>";
+
 }
 
     ?>

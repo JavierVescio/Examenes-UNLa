@@ -70,16 +70,17 @@ $arr_curso = RepositorioCurso::findById(Conexion::getConexion(),$examen->getIdCu
 $curso = Curso::buildFromArray($arr_curso[0]);
 
 ?>
-
-<div class='col-md-2'>
-<label>ID EXAMEN:</label><?=$examen->getIdExamen()?></br>
-<label>CURSO:</label><?=$curso->getNombre()?></br>
-<label>FECHA CREACION:</label><?=$examen->getFechaCreacion()?></br>
-<label>ALUMNO:</label><?=$nombre_completo?>
+<div class="container">
+    <div class="well">
+        <label>ID EXAMEN:</label><?=$examen->getIdExamen()?></br>
+        <label>CURSO:</label><?=$curso->getNombre()?></br>
+        <label>FECHA CREACION:</label><?=$examen->getFechaCreacion()?></br>
+        <label>ALUMNO:</label><?=$nombre_completo?>
+    </div>
 </div>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<div class="container">
+    <div class="well">
 
 <label>LISTADO DE PREGUNTAS:</label></br>
 
@@ -153,9 +154,15 @@ $arr_preguntas = RepositorioExamen::getPreguntasByExamen(Conexion::getConexion()
         Conexion::cerrar_conexion();
     ?>
 
-    <input type="submit" id="submit" name="submit" value="Enviar respuestas">
+    <div class="class='form-group col-lg-10 '">
+
+            <input type="submit" id="submit" name="submit" value="Enviar respuestas">
+
+    </div>
 </fieldset>
 </form>
+    </div>
+</div>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <?php
