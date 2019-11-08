@@ -31,14 +31,14 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>Eliminar!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-cancel btn-danger glyphicon glyphicon-trash '></button>" ;
                 }
             },
             {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#sedeModal'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-view glyphicon glyphicon-pencil' data-toggle='modal' data-target='#sedeModal'></button>" ;
                 }
             }
 
@@ -59,19 +59,14 @@ $(document).ready(function() {
             type: 'POST',
             data: datos,
             dataSrc: 'data',
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
             dataType: 'json',
             success: function(data) {
 
                 var sede = data.data[0];
 
                 // Muestro en el recuadro los resultados para debug
-                var jsonResult = JSON.stringify(sede);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(sede);
+                //$("#results").val(unescape(jsonResult));
 
                 // Seteo los campos del formulario
                 $('#id_sede').val(sede.id_sede);
@@ -98,22 +93,17 @@ $(document).ready(function() {
             url: '/php/abm-sedes.php',//# TODO armar url
             type: 'POST',
             data: datos,
-            headers: {
-                //'x-auth-token': localStorage.accessToken,
-                //"Authorization": "Token "+localStorage.auth_token,
-                //"Content-Type": "application/json"
-            },
             //dataType: 'json',
             success: function(data) {
                 alert(" Eliminado sede ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
                 $('#sedes-table').DataTable().ajax.reload();
             },
             error: function(data) {
                 alert(" ERROR Eliminando sede ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val( "ERROR " + unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val( "ERROR " + unescape(jsonResult));
 
             }
         })
@@ -130,14 +120,14 @@ $(document).ready(function() {
             dataType: 'json',
             data: f_data,
             success: function(data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
 
             },
             error: function(data) {
-                var jsonResult = JSON.stringify(data);
-                localStorage.removeItem('auth_token');
-                $("#results").val("ERROR "+ jsonResult);
+                //var jsonResult = JSON.stringify(data);
+                //localStorage.removeItem('auth_token');
+                //$("#results").val("ERROR "+ jsonResult);
             }
 
         });

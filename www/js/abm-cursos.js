@@ -14,6 +14,19 @@ $(document).ready(function() {
         oLanguage:{
             "sSearch": "Buscar: "
         },
+        "oLanguage": {
+            "sSearch": "Buscar:",
+            "sLengthMenu":     "Mostrar _MENU_ cursos",
+            "oPaginate": {
+                "sFirst":      "Primera",
+                "sLast":       "Ultima",
+                "sNext":       "Siguiente",
+                "sPrevious":   "Anterior"
+            },
+            "sInfo":           "Mostrando _START_ a _END_ de _TOTAL_ cursos",
+            "sInfoEmpty":      "Mostrando 0 a 0 de 0 cursos",
+
+        },
         "ajax": {
             "url":"/php/abm-cursos.php", //# TODO armar url
             "type": "POST",
@@ -31,14 +44,14 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>Eliminar!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-cancel btn-danger glyphicon glyphicon-trash'></button>" ;
                 }
             },
             {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#cursoModal'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-view glyphicon glyphicon-pencil' data-toggle='modal' data-target='#cursoModal'></button>" ;
                 }
             }
 

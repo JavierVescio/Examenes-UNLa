@@ -29,14 +29,14 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>Eliminar!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-cancel btn-danger glyphicon glyphicon-trash'></button>" ;
                 }
             },
             {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#paisModal'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-view glyphicon glyphicon-pencil' data-toggle='modal' data-target='#paisModal'></button>" ;
                 }
             }
 
@@ -62,8 +62,8 @@ $(document).ready(function() {
                 var pais = data.data[0];
 
                 // Muestro en el recuadro los resultados para debug
-                var jsonResult = JSON.stringify(pais);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(pais);
+                //$("#results").val(unescape(jsonResult));
 
                 // Seteo los campos del formulario
                 $('#id_pais').val(pais.id_pais);
@@ -76,28 +76,29 @@ $(document).ready(function() {
     } )
 
     // Evento eliminar asociado a cada ROW de la tabla
-    $('#paies-table tbody').on( 'click', 'button.btn-cancel', function () {
+    $('#paises-table tbody').on( 'click', 'button.btn-cancel', function () {
         var data = table.row( $(this).parents('tr') ).data();
 
-        var datos = { 'action' : "delete",
-            'id_sede' : data.id_sede
+        var datos = {
+            'action' : "delete",
+            'id_pais' : data.id_pais
         };
 
         $.ajax({
-            url: '/php/abm-sedes.php',//# TODO armar url
+            url: '/php/abm-paises.php',//# TODO armar url
             type: 'POST',
             data: datos,
             //dataType: 'json',
             success: function(data) {
-                alert(" Eliminado sede ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                alert(" Eliminado pais ");
+               // var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
                 $('#sede-table').DataTable().ajax.reload();
             },
             error: function(data) {
-                alert(" ERROR Eliminando sede ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val( "ERROR " + unescape(jsonResult));
+                alert(" ERROR Eliminando pais ");
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val( "ERROR " + unescape(jsonResult));
 
             }
         })
@@ -114,14 +115,14 @@ $(document).ready(function() {
             dataType: 'json',
             data: f_data,
             success: function(data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
 
             },
             error: function(data) {
-                var jsonResult = JSON.stringify(data);
-                localStorage.removeItem('auth_token');
-                $("#results").val("ERROR "+ jsonResult);
+                //var jsonResult = JSON.stringify(data);
+                //localStorage.removeItem('auth_token');
+                //$("#results").val("ERROR "+ jsonResult);
             }
 
         });

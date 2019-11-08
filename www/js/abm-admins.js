@@ -7,7 +7,7 @@ $(document).ready(function() {
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
-        "serverSide": true,
+        //"serverSide": true,
         info: false,
         retrieve: false,
         bPaginate: false,
@@ -34,14 +34,14 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>Eliminar!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-cancel btn-danger glyphicon glyphicon-trash'></button>" ;
                 }
             },
             {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#adminModal'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-view glyphicon glyphicon-pencil' data-toggle='modal' data-target='#adminModal'></button>" ;
                 }
             }
 
@@ -68,8 +68,8 @@ $(document).ready(function() {
                 var staff = data.data[0];
 
                 // Muestro en el recuadro los resultados para debug
-                var jsonResult = JSON.stringify(staff);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(staff);
+                //$("#results").val(unescape(jsonResult));
 
                 // Seteo los campos del formulario
                 $('#id_staff').val(staff.id_staff);
@@ -101,14 +101,14 @@ $(document).ready(function() {
             //dataType: 'json',
             success: function(data) {
                 alert(" Eliminado administrador ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
                 $('#datatable').DataTable().ajax.reload();
             },
             error: function(data) {
                 alert(" ERROR Eliminando administrador ");
-                var jsonResult = JSON.stringify(data);
-                $("#results").val( "ERROR " + unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val( "ERROR " + unescape(jsonResult));
 
             }
         })
@@ -125,14 +125,14 @@ $(document).ready(function() {
             dataType: 'json',
             data: f_data,
             success: function(data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
 
             },
             error: function(data) {
-                var jsonResult = JSON.stringify(data);
-                localStorage.removeItem('auth_token');
-                $("#results").val("ERROR "+ jsonResult);
+                //var jsonResult = JSON.stringify(data);
+                //localStorage.removeItem('auth_token');
+                //$("#results").val("ERROR "+ jsonResult);
             }
 
         });

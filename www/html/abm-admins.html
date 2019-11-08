@@ -23,7 +23,7 @@
 <!-- BOTON NUEVO -->
 <div class="container">
     <div class="well">
-        <button type="button" class="btn btn-default" id="newButton" data-toggle='modal' data-target='#adminModal'>Nuevo</button>
+        <button type="button" class="btn btn-success glyphicon glyphicon-plus" id="newButton" data-toggle='modal' data-target='#adminModal'>Nuevo</button>
     </div>
 </div>
 
@@ -43,28 +43,32 @@
                     <input type="hidden"  class="form-control" id="action" name="action" value="create" />
                     <div class="form-group col-xs-12 col-sm-6">
                         <label for="nombre" class="control-label">Nombre</label>
-                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Enter First Name">
+                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ingrese nombres">
                     </div>
                     <div class="form-group col-xs-12 col-sm-6">
                         <label for="apellido" class="control-lable">Apellido</label>
-                        <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Enter Last Name">
+                        <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Ingrese su apellido">
                     </div>
 
                     <div class="form-group col-xs-6 col-sm-6">
                         <label for="tipo_doc" class="control-lable">Tipo Doc</label>
-                        <input type="text" class="form-control" name="tipo_doc" id="tipo_doc" placeholder="Tipo doc">
+                        <select class="form-control" name="tipo_doc" id="tipo_doc" >
+                            <option value="" >Seleccion un opcion</option>
+                            <option value="DNI" >DNI</option>
+                            <option value="PAS" >Pasaporte</option>
+                        </select>
                     </div>
                     <div class="form-group col-xs-6 col-sm-6">
                         <label for="tipo_doc" class="control-lable">Documento</label>
-                        <input type="text" class="form-control" name="documento" id="documento" placeholder="Documento">
+                        <input type="text" class="form-control" name="documento" id="documento" placeholder="Ingrese su documento">
                     </div>
                     <div class="form-group col-xs-12 col-sm-12">
                         <label for="email" class="control-label">Email</label>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Ingrese Email">
                     </div>
                     <div class="form-group col-xs-12 col-sm-12">
                         <label for="clave_acceso" class="control-label">Clave</label>
-                        <input type="text" class="form-control" name="clave_acceso" id="clave_acceso" placeholder="Clave">
+                        <input type="text" class="form-control" name="clave_acceso" id="clave_acceso" placeholder="Ingrese su Clave">
                     </div>
                     <div class="form-group col-xs-12 col-sm-12">
                         <label for="tipo_perfil" class="control-label">Tipo Perfil</label>
@@ -86,9 +90,9 @@
             </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="saveButton">Grabar</button>
-                <button class="btn btn-danger" type="reset">Limpiar</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success glyphicon glyphicon-save" id="saveButton">Grabar</button>
+                <button class="btn btn-default" type="reset">Limpiar</button>
+                <button type="button" class="btn btn-danger glyphicon glyphicon-remove" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

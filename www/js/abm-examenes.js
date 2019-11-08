@@ -9,6 +9,19 @@ $(document).ready(function () {
         "autoWidth": false,
         "order": [[0, "desc"]],
         "processing": true,
+        "oLanguage": {
+            "sSearch": "Buscar:",
+            "sLengthMenu":     "Mostrar _MENU_ examenes",
+            "oPaginate": {
+                "sFirst":      "Primera",
+                "sLast":       "Ultima",
+                "sNext":       "Siguiente",
+                "sPrevious":   "Anterior"
+            },
+            "sInfo":           "Mostrando _START_ a _END_ de _TOTAL_ examenes",
+            "sInfoEmpty":      "Mostrando 0 a 0 de 0 examenes",
+
+        },
         "ajax": {
             "url": "/php/abm-examenes.php", //# TODO armar url
             "type": "POST",
@@ -29,14 +42,14 @@ $(document).ready(function () {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='" + row.id + "' class='btn btn-primary btn-lg btn-block btn-cancel'>Eliminar!</button>";
+                    return "<button id='" + row.id + "' class='btn btn-primary btn-block btn-cancel btn-danger glyphicon glyphicon-trash'></button>";
                 }
             },
             {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='" + row.id + "' class='btn btn-primary btn-lg btn-block btn-view'>Ver!</button>";
+                    return "<button id='" + row.id + "' class='btn btn-primary btn-block btn-view glyphicon glyphicon-pencil'></button>";
                 }
             }
         ],
@@ -53,14 +66,14 @@ $(document).ready(function () {
             dataType: 'json',
             data: f_data,
             success: function (data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
 
             },
             error: function (data) {
                 var jsonResult = JSON.stringify(data);
                 console.log(jsonResult)
-                $("#results").val("ERROR " + jsonResult);
+                //$("#results").val("ERROR " + jsonResult);
             }
 
         });

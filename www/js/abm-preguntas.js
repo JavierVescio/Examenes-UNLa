@@ -20,8 +20,8 @@ function loadPregunta($id_pregunta){
             var pregunta = data.data[0];
 
             // Muestro en el recuadro los resultados para debug
-            var jsonResult = JSON.stringify(pregunta);
-            $("#results").val(unescape(jsonResult));
+            //var jsonResult = JSON.stringify(pregunta);
+            //$("#results").val(unescape(jsonResult));
 
             // Seteo los campos del formulario
             $('#id_pregunta').val(pregunta.id_pregunta);
@@ -61,14 +61,14 @@ function deletePregunta($id_pregunta){
         //dataType: 'json',
         success: function(data) {
             alert(" Eliminado pregunta ");
-            var jsonResult = JSON.stringify(data);
-            $("#results").val(unescape(jsonResult));
+            //var jsonResult = JSON.stringify(data);
+            //$("#results").val(unescape(jsonResult));
             tabla_preguntas.ajax.reload();
         },
         error: function(data) {
             alert(" ERROR Eliminando pregunta ");
-            var jsonResult = JSON.stringify(data);
-            $("#results").val( "ERROR " + unescape(jsonResult));
+            //var jsonResult = JSON.stringify(data);
+            //$("#results").val( "ERROR " + unescape(jsonResult));
 
         }
     })
@@ -121,8 +121,8 @@ function loadOption($id_opcion){
             var opcion = data.data[0];
 
             // Muestro en el recuadro los resultados para debug
-            var jsonResult = JSON.stringify(opcion);
-            $("#results").val(unescape(jsonResult));
+            //var jsonResult = JSON.stringify(opcion);
+            //$("#results").val(unescape(jsonResult));
 
             // Seteo los campos del formulario
             $('#id_opcion').val(opcion.id_opcion);
@@ -150,14 +150,14 @@ function deleteOption($id_opcion){
         //dataType: 'json',
         success: function(data) {
             alert(" Eliminado opcion ");
-            var jsonResult = JSON.stringify(data);
-            $("#results").val(unescape(jsonResult));
+            //var jsonResult = JSON.stringify(data);
+            //$("#results").val(unescape(jsonResult));
             tabla_opciones.ajax.reload();
         },
         error: function(data) {
             alert(" ERROR Eliminando opcion ");
-            var jsonResult = JSON.stringify(data);
-            $("#results").val( "ERROR " + unescape(jsonResult));
+            //var jsonResult = JSON.stringify(data);
+            //$("#results").val( "ERROR " + unescape(jsonResult));
 
         }
     })
@@ -171,6 +171,19 @@ $(document).ready(function() {
         "autoWidth": false,
         "order": [[ 0, "desc" ]],
         "processing": true,
+        "oLanguage": {
+            "sSearch": "Buscar:",
+            "sLengthMenu":     "Mostrar _MENU_ preguntas",
+            "oPaginate": {
+                "sFirst":      "Primera",
+                "sLast":       "Ultima",
+                "sNext":       "Siguiente",
+                "sPrevious":   "Anterior"
+            },
+            "sInfo":           "Mostrando _START_ a _END_ de _TOTAL_ preguntas",
+            "sInfoEmpty":      "Mostrando 0 a 0 de 0 preguntas",
+
+        },
         "ajax": {
             "url":"/php/abm-preguntas.php", //# TODO armar url
             "type": "POST",
@@ -189,14 +202,14 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>Eliminar!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-cancel btn-danger glyphicon glyphicon-trash'></button>" ;
                 }
             },
             {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view' data-toggle='modal' data-target='#preguntaModal'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-view glyphicon glyphicon-pencil' data-toggle='modal' data-target='#preguntaModal'></button>" ;
                 }
             }
 
@@ -252,14 +265,14 @@ $(document).ready(function() {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-cancel'>X</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-cancel btn-danger glyphicon glyphicon-trash '></button>" ;
                 }
             },
             {
                 //"targets": -1,
                 "data": null,
                 'render': function (data, type, row) {
-                    return "<button id='"+row.id+"' class='btn btn-primary btn-lg btn-block btn-view'>Ver!</button>" ;
+                    return "<button id='"+row.id+"' class='btn btn-primary btn-block btn-view glyphicon glyphicon-pencil'></button>" ;
                 }
             }
 
@@ -291,14 +304,14 @@ $(document).ready(function() {
             dataType: 'json',
             data: f_data,
             success: function(data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
                 //alert('Pregunta creada correctamente');
 
             },
             error: function(data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val("ERROR "+ jsonResult);
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val("ERROR "+ jsonResult);
                 //alert('Error al crear pregunta');
             }
 
@@ -322,14 +335,14 @@ $(document).ready(function() {
                 if(f_data['tipo_pregunta'] == "VF")
                         simularInsertTrueFalse();
 
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
                 alert('Pregunta creada correctamente');
 
             },
             error: function(data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val("ERROR "+ jsonResult);
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val("ERROR "+ jsonResult);
                 alert('Error al crear pregunta');
             }
 
@@ -348,13 +361,13 @@ $(document).ready(function() {
             processData: false,
             data: f_data,
             success: function(data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val(unescape(jsonResult));
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val(unescape(jsonResult));
                 loadImage($('#id_pregunta').val());
             },
             error: function(data) {
-                var jsonResult = JSON.stringify(data);
-                $("#results").val("ERROR "+ jsonResult);
+                //var jsonResult = JSON.stringify(data);
+                //$("#results").val("ERROR "+ jsonResult);
             }
 
         });
